@@ -1,0 +1,32 @@
+{
+  "domain": "localhost",
+  "port": 3000,
+
+  "database": {
+    "host": "localhost",
+    "port": 27017,
+    "user": "root",
+    "password": "no-password",
+    "database": "website_test"
+  },
+
+  "objstorage": {
+    "host": "localhost",
+    "port": 9000,
+    "user": "root",
+    "password": "no-password",
+    "bucket": "website-test"
+  },
+
+  "users": [
+    {
+      "username": "testuser",
+      "passwordHash": "kW83un60RZvFwuehOluJiCws7VU9yOKcdTsSt060ZBI="
+    }
+  ],
+
+  "jwt": {
+    "serverSecret": "no-secret",
+    "expireIn": "10h"
+  }
+}

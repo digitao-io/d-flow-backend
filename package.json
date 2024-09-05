@@ -1,0 +1,29 @@
+{
+  "name": "d-flow-backend",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "clean": "rm -rf ./dist && rm -rf ./node_modules/.tmp/"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "express": "^4.19.2",
+    "minio": "^8.0.1",
+    "mongodb": "^6.8.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@stylistic/eslint-plugin": "^2.7.2",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.4",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "eslint": "^9.9.1",
+    "supertest": "^7.0.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}
