@@ -12,9 +12,8 @@ export const pageCreate: Handler<
   entity: "page",
   operation: "create",
 
-  async handle(ctx, input) {
-    await ctx.database.db().collection("page").insertOne(input.data);
-
-    return { data: { "key": input.data.key } };
+  async handle(ctx, { data }) {
+    await ctx.database.db().collection("page").insertOne(data);
+    return { data: { key: data.key } };
   },
 };

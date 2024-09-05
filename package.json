@@ -5,7 +5,8 @@
     "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "clean": "rm -rf ./dist && rm -rf ./node_modules/.tmp/"
+    "clean": "rm -rf ./dist && rm -rf ./node_modules/.tmp/",
+    "test": "vitest"
   },
   "dependencies": {
     "ajv": "^8.17.1",

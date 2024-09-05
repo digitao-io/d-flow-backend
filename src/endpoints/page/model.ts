@@ -4,6 +4,7 @@ export interface PageData {
   title: string;
   description: string;
   urlPattern: string;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details: any;
 }
