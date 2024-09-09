@@ -10,12 +10,6 @@ describe("/site/page/get", () => {
     await app.context.database.db().collection("pages").drop();
   });
 
-  afterEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
-  });
-
   it("rejects if the page not exist", async () => {
     const response = await supertest(app.express)
       .post("/site/page/get")

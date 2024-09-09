@@ -10,12 +10,6 @@ describe("/site/page/create", () => {
     await app.context.database.db().collection("pages").drop();
   });
 
-  afterEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
-  });
-
   it("returns newly inserted page key", async () => {
     const response = await supertest(app.express)
       .post("/site/page/create")
