@@ -5,7 +5,9 @@ import { Configuration, readConfiguration } from "./configuration";
 import { setupDatabase } from "./database";
 import { setupObjstorage } from "./objstorage";
 import { Handler, wrapHandler } from "./handler";
+
 import { healthCheckRun } from "../endpoints/health-check/run";
+import { pageCreate } from "../endpoints/page/create";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -39,6 +41,8 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.express = express();
 
     this.register(healthCheckRun);
+
+    this.register(pageCreate);
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
