@@ -13,7 +13,7 @@ export const pageCreate: Handler<
   operation: "create",
 
   async handle(ctx, { data }) {
-    await ctx.database.db().collection("page").insertOne(data);
+    await ctx.database.db().collection("pages").insertOne(data);
     return { data: { key: data.key } };
   },
 };
