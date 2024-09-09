@@ -15,7 +15,7 @@ describe("/site/page/get", () => {
       .post("/site/page/get")
       .send({
         params: {
-          key: "C++",
+          key: "cpp",
         },
       });
 
@@ -31,11 +31,11 @@ describe("/site/page/get", () => {
       .post("/site/page/create")
       .send({
         data: {
-          key: "Nim",
+          key: "nim",
           title: "Nim program language",
           description: "This is Nim program note",
-          urlPattern: "This urlPattern",
-          details: "The Nim program language is a static language.",
+          urlPattern: "/articles/nim",
+          details: { details: "Nim" },
         },
       });
 
@@ -43,19 +43,21 @@ describe("/site/page/get", () => {
       .post("/site/page/get")
       .send({
         parameters: {
-          key: "Nim",
+          key: "nim",
         },
       });
+
+    console.log(response.body);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "Nim",
+        key: "nim",
         title: "Nim program language",
         description: "This is Nim program note",
-        urlPattern: "This urlPattern",
-        details: "The Nim program language is a static language.",
+        urlPattern: "/articles/nim",
+        details: { details: "Nim" },
       },
     });
   });

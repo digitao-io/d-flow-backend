@@ -18,8 +18,8 @@ describe("/site/page/create", () => {
           key: "c",
           title: "C program language",
           description: "This is C program note",
-          urlPattern: "This urlPattern",
-          details: "The C program language is a static language.",
+          urlPattern: "/page/articles-c",
+          details: { details: "C" },
         },
       });
 
