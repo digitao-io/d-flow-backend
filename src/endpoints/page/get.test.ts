@@ -47,8 +47,6 @@ describe("/site/page/get", () => {
         },
       });
 
-    console.log(response.body);
-
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",

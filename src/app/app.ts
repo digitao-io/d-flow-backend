@@ -8,6 +8,8 @@ import { Handler, wrapHandler } from "./handler";
 
 import { healthCheckRun } from "../endpoints/health-check/run";
 import { pageCreate } from "../endpoints/page/create";
+import { pageGet } from "../endpoints/page/get";
+import { pageList } from "../endpoints/page/list";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -43,6 +45,8 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(healthCheckRun);
 
     this.register(pageCreate);
+    this.register(pageGet);
+    this.register(pageList);
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
