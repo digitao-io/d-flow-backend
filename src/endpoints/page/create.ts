@@ -1,5 +1,5 @@
 import { Configuration, Context, Handler } from "../../main";
-import { Page, PageIdentifier } from "./model";
+import { Page, PageIdentifier, pageValidation } from "./model";
 
 export const pageCreate: Handler<
   Context<Configuration>,
@@ -11,6 +11,8 @@ export const pageCreate: Handler<
   namespace: "site",
   entity: "page",
   operation: "create",
+
+  dataValidation: pageValidation,
 
   async handle(ctx, { data }) {
     await ctx.database.db().collection("pages").insertOne(data);
