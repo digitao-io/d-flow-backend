@@ -7,7 +7,7 @@ describe("/site/page/get", () => {
   beforeEach(async () => {
     app = new App();
     await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
+    await app.context.database.db().collection("pages").deleteMany();
   });
 
   it("rejects if the page not exist", async () => {
@@ -35,14 +35,14 @@ describe("/site/page/get", () => {
           title: "Nim program language",
           description: "This is Nim program note",
           urlPattern: "/articles/nim",
-          details: { details: "Nim" },
+          details: { foo: "bar" },
         },
       });
 
     const response = await supertest(app.express)
       .post("/site/page/get")
       .send({
-        parameters: {
+        params: {
           key: "nim",
         },
       });
@@ -55,7 +55,7 @@ describe("/site/page/get", () => {
         title: "Nim program language",
         description: "This is Nim program note",
         urlPattern: "/articles/nim",
-        details: { details: "Nim" },
+        details: { foo: "bar" },
       },
     });
   });

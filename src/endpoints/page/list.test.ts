@@ -7,7 +7,7 @@ describe("/site/page/list", () => {
   beforeEach(async () => {
     app = new App();
     await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
+    await app.context.database.db().collection("pages").deleteMany();
   });
 
   it("if the page is empty", async () => {
@@ -49,7 +49,6 @@ describe("/site/page/list", () => {
     const response = await supertest(app.express)
       .post("/site/page/list");
 
-    console.log(response.body);
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",

@@ -15,7 +15,10 @@ export const pageGet: Handler<
   paramsValidation: pageIdentifierValidation,
 
   async handle(ctx, { params }) {
-    const page = await ctx.database.db().collection<Page>("pages").findOne({ params }, { projection: { _id: 0 } });
+    const page = await ctx.database.db().collection<Page>("pages").findOne(
+      { key: params.key },
+      { projection: { _id: 0 } },
+    );
     return { data: page };
   },
 };

@@ -7,7 +7,7 @@ describe("/site/page/create", () => {
   beforeEach(async () => {
     app = new App();
     await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
+    await app.context.database.db().collection("pages").deleteMany();
   });
 
   it("returns newly inserted page key", async () => {

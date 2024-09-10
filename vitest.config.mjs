@@ -4,11 +4,10 @@ export default defineConfig({
   test: {
     include: ["src/**/*.test.ts"],
     globals: true,
-    poolOptions: {
-      threads: {
-        singleThread: true,
-        isolate: true,
-      },
+
+    fileParallelism: false,
+    sequence: {
+      concurrent: false,
     },
   },
 });

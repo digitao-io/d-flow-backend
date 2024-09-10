@@ -51,7 +51,6 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
     const path = `/${handler.namespace}/${handler.entity}/${handler.operation}`;
-    console.log(path);
 
     this.express.post(path, express.json(), wrapHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>(this.context, handler));
 
