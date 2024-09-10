@@ -10,6 +10,8 @@ import { healthCheckRun } from "../endpoints/health-check/run";
 import { pageCreate } from "../endpoints/page/create";
 import { pageGet } from "../endpoints/page/get";
 import { pageList } from "../endpoints/page/list";
+import { pageUpdate } from "../endpoints/page/update";
+import { pageDelete } from "../endpoints/page/delete";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -47,6 +49,8 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(pageCreate);
     this.register(pageGet);
     this.register(pageList);
+    this.register(pageUpdate);
+    this.register(pageDelete);
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {

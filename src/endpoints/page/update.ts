@@ -1,7 +1,7 @@
 import { Configuration, Context, Handler } from "../../main";
-import { PageData, PageIdentifier } from "./model";
+import { PageData, PageIdentifier, pageIdentifierValidation } from "./model";
 
-export const PageUpdate: Handler<
+export const pageUpdate: Handler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
@@ -12,8 +12,13 @@ export const PageUpdate: Handler<
   entity: "page",
   operation: "update",
 
+  paramsValidation: pageIdentifierValidation,
+
   async handle(ctx, { params, data }) {
-    await ctx.database.db().collection("pages").updateOne(params, data);
+    await ctx.database.db().collection("pages").updateOne(
+      { key: params.key },
+      { $set: data },
+    );
     return { data: { key: params.key } };
   },
 };

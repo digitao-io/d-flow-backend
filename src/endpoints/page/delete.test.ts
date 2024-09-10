@@ -1,20 +1,20 @@
 import { App, Configuration, Context } from "../../main";
 import supertest from "supertest";
 
-describe("/site/page/get", () => {
+describe("/site/page/delete", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
     app = new App();
     await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").deleteMany();
+    await app.context.database.db().collection("pages").drop();
   });
 
-  it("rejects if the page not exist", async () => {
+  it("if the page not exist", async () => {
     const response = await supertest(app.express)
-      .post("/site/page/get")
+      .post("/site/page/delete")
       .send({
-        params: { },
+        params: {},
       });
 
     expect(response.status).toBe(400);
@@ -25,24 +25,32 @@ describe("/site/page/get", () => {
     });
   });
 
-  it("returns page entity", async () => {
+  it("delete a page entity", async () => {
     await supertest(app.express)
       .post("/site/page/create")
       .send({
         data: {
-          key: "nim",
-          title: "Nim program language",
-          description: "This is Nim program note",
-          urlPattern: "/articles/nim",
-          details: { foo: "bar" },
+          key: "c",
+          title: "C program language",
+          description: "This is C program note",
+          urlPattern: "/page/articles-c",
+          details: { details: "C" },
         },
       });
 
     const response = await supertest(app.express)
+      .post("/site/page/delete")
+      .send({
+        params: {
+          key: "c",
+        },
+      });
+
+    const getResponse = await supertest(app.express)
       .post("/site/page/get")
       .send({
         params: {
-          key: "nim",
+          key: "c",
         },
       });
 
@@ -50,12 +58,14 @@ describe("/site/page/get", () => {
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "nim",
-        title: "Nim program language",
-        description: "This is Nim program note",
-        urlPattern: "/articles/nim",
-        details: { foo: "bar" },
+        key: "c",
       },
+    });
+
+    expect(getResponse.body).toEqual({
+      status: "FAILED",
+      error: "ENTITY_NOT_FOUND",
+      message: expect.any(String),
     });
   });
 });

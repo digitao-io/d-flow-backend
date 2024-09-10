@@ -1,11 +1,11 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, Handler, HandlerError } from "../../main";
 import { Page, PageIdentifier, pageIdentifierValidation } from "./model";
 
 export const pageGet: Handler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
-  Page,
+  undefined,
   Page
 > = {
   namespace: "site",
@@ -19,6 +19,9 @@ export const pageGet: Handler<
       { key: params.key },
       { projection: { _id: 0 } },
     );
+    if (page === null) {
+      throw new HandlerError("ENTITY_NOT_FOUND", "The entity was not found.");
+    }
     return { data: page };
   },
 };

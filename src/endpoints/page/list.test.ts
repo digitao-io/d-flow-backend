@@ -7,7 +7,7 @@ describe("/site/page/list", () => {
   beforeEach(async () => {
     app = new App();
     await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").deleteMany();
+    await app.context.database.db().collection("pages").drop();
   });
 
   it("if the page is empty", async () => {
