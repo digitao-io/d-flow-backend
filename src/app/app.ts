@@ -12,6 +12,11 @@ import { pageGet } from "../endpoints/page/get";
 import { pageList } from "../endpoints/page/list";
 import { pageUpdate } from "../endpoints/page/update";
 import { pageDelete } from "../endpoints/page/delete";
+import { userCreate } from "../endpoints/user/create";
+import { userGet } from "../endpoints/user/get";
+import { userDelete } from "../endpoints/user/delete";
+import { userUpdate } from "../endpoints/user/update";
+import { userList } from "../endpoints/user/list";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -51,6 +56,12 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(pageList);
     this.register(pageUpdate);
     this.register(pageDelete);
+
+    this.register(userCreate);
+    this.register(userGet);
+    this.register(userDelete);
+    this.register(userUpdate);
+    this.register(userList);
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {

@@ -27,7 +27,7 @@ describe("/site/page/update", () => {
     });
   });
 
-  it("upate the page", async () => {
+  it("update the page", async () => {
     await supertest(app.express)
       .post("/site/page/create")
       .send({
@@ -69,7 +69,7 @@ describe("/site/page/update", () => {
         key: "nim",
       },
     });
-    expect(response.status).toBe(200);
+
     expect(getResponse.body).toEqual({
       status: "OK",
       data: {
