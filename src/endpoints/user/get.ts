@@ -1,12 +1,12 @@
 import { Configuration, Context, Handler, HandlerError } from "../../main";
-import { User, UserIdentifier, userIdentifierValidation } from "./model";
+import { UserResponse, UserIdentifier, userIdentifierValidation } from "./model";
 
 export const userGet: Handler<
   Context<Configuration>,
   Configuration,
   UserIdentifier,
   undefined,
-  User
+  UserResponse
 > = {
   namespace: "site",
   entity: "user",
@@ -16,7 +16,7 @@ export const userGet: Handler<
 
   async handle(ctx, { params }) {
     const user = await ctx.database.db().collection("users")
-      .findOne<User | null>(
+      .findOne<UserResponse | null>(
         { username: params.username },
         { projection: { _id: 0, passwordHash: 0 } },
       );

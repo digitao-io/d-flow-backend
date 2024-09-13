@@ -26,15 +26,20 @@ describe("/site/page/list", () => {
   });
 
   it("should return all pages", async () => {
+    jest.useFakeTimers({
+      doNotFake: ["nextTick"],
+      now: new Date("2024-01-01T00:00:00.000Z"),
+    });
+
     await supertest(app.express)
       .post("/site/page/create")
       .send({
         data: {
-          key: "c",
-          title: "C program language",
-          description: "This is C program note",
-          urlPattern: "/page/articles-c",
-          details: { details: "C" },
+          key: "c-intro",
+          title: "C Programming Language Introduction",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-intro",
+          details: { foo: "bar" },
         },
       });
 
@@ -42,11 +47,11 @@ describe("/site/page/list", () => {
       .post("/site/page/create")
       .send({
         data: {
-          key: "cpp",
-          title: "cpp program language",
-          description: "This is cpp program note",
-          urlPattern: "/page/cpp",
-          details: { details: "cpp" },
+          key: "cpp-intro",
+          title: "C++ Programming Language Introduction",
+          description: "This is a C++ programing language introduction",
+          urlPattern: "/articles/cpp-intro",
+          details: { foo: "bar" },
         },
       });
 
@@ -58,18 +63,22 @@ describe("/site/page/list", () => {
       status: "OK",
       data: [
         {
-          key: "c",
-          title: "C program language",
-          description: "This is C program note",
-          urlPattern: "/page/articles-c",
-          details: { details: "C" },
+          key: "c-intro",
+          title: "C Programming Language Introduction",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-intro",
+          details: { foo: "bar" },
+          createdAt: "2024-01-01T00:00:00.000Z",
+          updatedAt: "2024-01-01T00:00:00.000Z",
         },
         {
-          key: "cpp",
-          title: "cpp program language",
-          description: "This is cpp program note",
-          urlPattern: "/page/cpp",
-          details: { details: "cpp" },
+          key: "cpp-intro",
+          title: "C++ Programming Language Introduction",
+          description: "This is a C++ programing language introduction",
+          urlPattern: "/articles/cpp-intro",
+          details: { foo: "bar" },
+          createdAt: "2024-01-01T00:00:00.000Z",
+          updatedAt: "2024-01-01T00:00:00.000Z",
         },
       ],
       total: 2,

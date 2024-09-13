@@ -1,12 +1,12 @@
 import { Configuration, Context, Handler, HandlerError } from "../../main";
-import { Page, PageIdentifier, pageIdentifierValidation } from "./model";
+import { PageResponse, PageIdentifier, pageIdentifierValidation, PageDatabase } from "./model";
 
 export const pageGet: Handler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
   undefined,
-  Page
+  PageResponse
 > = {
   namespace: "site",
   entity: "page",
@@ -15,15 +15,26 @@ export const pageGet: Handler<
   paramsValidation: pageIdentifierValidation,
 
   async handle(ctx, { params }) {
-    const page = await ctx.database.db().collection<Page>("pages").findOne(
-      { key: params.key },
-      { projection: { _id: 0 } },
-    );
+    const page = await ctx.database.db().collection("pages")
+      .findOne<PageDatabase>(
+        { key: params.key },
+        { projection: { _id: 0 } },
+      );
 
     if (page === null) {
       throw new HandlerError("ENTITY_NOT_FOUND", `Page with key ${params.key} doesn't exist`);
     }
 
-    return { data: page };
+    return {
+      data: {
+        key: page.key,
+        title: page.title,
+        description: page.description,
+        urlPattern: page.urlPattern,
+        details: page.details,
+        createdAt: page.createdAt.toISOString(),
+        updatedAt: page.updatedAt.toISOString(),
+      },
+    };
   },
 };

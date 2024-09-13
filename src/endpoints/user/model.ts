@@ -65,20 +65,7 @@ export const userIdentifierValidation = {
   },
 };
 
-export interface User extends UserData, UserIdentifier {}
-
-export const userValidation = {
-  type: "object",
-  additionalProperties: false,
-  required: [
-    ...userDataValidation.required,
-    ...userIdentifierValidation.required,
-  ],
-  properties: {
-    ...userDataValidation.properties,
-    ...userIdentifierValidation.properties,
-  },
-};
+export interface UserResponse extends UserData, UserIdentifier {}
 
 export interface UserDatabase extends UserDatabaseData, UserData, UserIdentifier {}
 

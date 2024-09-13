@@ -26,6 +26,16 @@ export const pageDataValidation = {
   },
 };
 
+export interface PageDatabaseData {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PageResponseData {
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PageIdentifier {
   key: string;
 }
@@ -41,9 +51,13 @@ export const pageIdentifierValidation = {
   },
 };
 
-export interface Page extends PageData, PageIdentifier {}
+export interface PageResponse extends PageData, PageResponseData, PageIdentifier {}
 
-export const pageValidation = {
+export interface PageDatabase extends PageData, PageDatabaseData, PageIdentifier {}
+
+export interface PageCreateAndUpdate extends PageData, PageIdentifier {}
+
+export const pageCreateAndUpdateValidation = {
   type: "object",
   additionalProperties: false,
   required: [

@@ -29,6 +29,11 @@ describe("/site/page/get", () => {
   });
 
   it("should response with correct page entity", async () => {
+    jest.useFakeTimers({
+      doNotFake: ["nextTick"],
+      now: new Date("2024-01-01T00:00:00.000Z"),
+    });
+
     await supertest(app.express)
       .post("/site/page/create")
       .send({
@@ -56,6 +61,8 @@ describe("/site/page/get", () => {
         description: "This is a C programing language introduction",
         urlPattern: "/articles/c-intro",
         details: { foo: "bar" },
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2024-01-01T00:00:00.000Z",
       },
     });
   });

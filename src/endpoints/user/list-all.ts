@@ -1,12 +1,12 @@
 import { Configuration, Context, Handler } from "../../main";
-import { User } from "./model";
+import { UserResponse } from "./model";
 
 export const userList: Handler<
   Context<Configuration>,
   Configuration,
   undefined,
   undefined,
-  Array<User>
+  Array<UserResponse>
 > = {
   namespace: "site",
   entity: "user",
@@ -14,7 +14,7 @@ export const userList: Handler<
 
   async handle(ctx) {
     const users = await ctx.database.db().collection("users")
-      .find<User>({}, { projection: { _id: 0, passwordHash: 0 } })
+      .find<UserResponse>({}, { projection: { _id: 0, passwordHash: 0 } })
       .sort({ username: 1 })
       .toArray();
     const total = await ctx.database.db().collection("users")

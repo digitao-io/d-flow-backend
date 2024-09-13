@@ -38,6 +38,11 @@ describe("/site/page/update", () => {
   });
 
   it("should update the page correctly", async () => {
+    jest.useFakeTimers({
+      doNotFake: ["nextTick"],
+      now: new Date("2024-01-01T00:00:00.000Z"),
+    });
+
     await supertest(app.express)
       .post("/site/page/create")
       .send({
@@ -50,6 +55,10 @@ describe("/site/page/update", () => {
         },
       });
 
+    jest.useFakeTimers({
+      doNotFake: ["nextTick"],
+      now: new Date("2024-01-02T00:00:00.000Z"),
+    });
     const updateResponse = await supertest(app.express)
       .post("/site/page/update")
       .send({
@@ -87,6 +96,8 @@ describe("/site/page/update", () => {
         description: "This is a C programing language introduction",
         urlPattern: "/articles/c-lang-intro",
         details: { foo: "bar" },
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2024-01-02T00:00:00.000Z",
       },
     });
   });
