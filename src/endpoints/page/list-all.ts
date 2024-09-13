@@ -15,6 +15,7 @@ export const pageList: Handler<
   async handle(ctx) {
     const pages = await ctx.database.db().collection("pages")
       .find<Page>({}, { projection: { _id: 0 } })
+      .sort({ key: 1 })
       .toArray();
     const total = await ctx.database.db().collection("pages")
       .countDocuments({});

@@ -1,4 +1,4 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, Handler, HandlerError } from "../../main";
 import { PageIdentifier, pageIdentifierValidation } from "./model";
 
 export const pageDelete: Handler<
@@ -15,7 +15,12 @@ export const pageDelete: Handler<
   paramsValidation: pageIdentifierValidation,
 
   async handle(ctx, { params }) {
-    await ctx.database.db().collection("pages").deleteOne({ key: params.key });
+    const deleteResult = await ctx.database.db().collection("pages").deleteOne({ key: params.key });
+
+    if (deleteResult.deletedCount < 1) {
+      throw new HandlerError("ENTITY_NOT_FOUND", `Page with key ${params.key} doesn't exist`);
+    }
+
     return { data: { key: params.key } };
   },
 };

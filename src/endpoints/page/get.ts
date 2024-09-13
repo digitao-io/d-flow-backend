@@ -19,9 +19,11 @@ export const pageGet: Handler<
       { key: params.key },
       { projection: { _id: 0 } },
     );
+
     if (page === null) {
-      throw new HandlerError("ENTITY_NOT_FOUND", "The entity was not found.");
+      throw new HandlerError("ENTITY_NOT_FOUND", `Page with key ${params.key} doesn't exist`);
     }
+
     return { data: page };
   },
 };

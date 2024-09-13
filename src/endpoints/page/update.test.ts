@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
-import { runBeforeEach } from "../../test/testutils";
-import supertest from "supertest";
+import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import * as supertest from "supertest";
 
 describe("/site/page/update", () => {
   let app: App< Context<Configuration>, Configuration>;
@@ -9,46 +9,58 @@ describe("/site/page/update", () => {
     app = await runBeforeEach();
   });
 
-  it("if the page not exist", async () => {
+  afterEach(async () => {
+    await runAfterEach(app);
+  });
+
+  it("should response with 404 if the page doens't exist", async () => {
     const response = await supertest(app.express)
       .post("/site/page/update")
       .send({
         params: {
-          key: "c++",
+          key: "c-intro",
         },
-      });
-
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      status: "FAILED",
-      error: "INVALID_PARAMS",
-      message: expect.any(String),
-    });
-  });
-
-  it("update the page", async () => {
-    await supertest(app.express)
-      .post("/site/page/create")
-      .send({
         data: {
-          key: "nim",
-          title: "Nim program language",
-          description: "This is Nim program note",
-          urlPattern: "/articles/nim",
+          key: "c-lang-intro",
+          title: "An Introduction to C Programming Language",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-lang-intro",
           details: { foo: "bar" },
         },
       });
 
-    const response = await supertest(app.express)
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      status: "FAILED",
+      error: "ENTITY_NOT_FOUND",
+      message: "Page with key c-intro doesn't exist",
+    });
+  });
+
+  it("should update the page correctly", async () => {
+    await supertest(app.express)
+      .post("/site/page/create")
+      .send({
+        data: {
+          key: "c-intro",
+          title: "C Programming Language Introduction",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-intro",
+          details: { foo: "bar" },
+        },
+      });
+
+    const updateResponse = await supertest(app.express)
       .post("/site/page/update")
       .send({
         params: {
-          key: "nim",
+          key: "c-intro",
         },
         data: {
-          title: "Nim program language and is a static language",
-          description: "This is Nim program note",
-          urlPattern: "/articles/nim",
+          key: "c-lang-intro",
+          title: "An Introduction to C Programming Language",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-lang-intro",
           details: { foo: "bar" },
         },
       });
@@ -56,26 +68,24 @@ describe("/site/page/update", () => {
     const getResponse = await supertest(app.express)
       .post("/site/page/get")
       .send({
-        params: {
-          key: "nim",
-        },
+        params: { key: "c-lang-intro" },
       });
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
+    expect(updateResponse.status).toBe(200);
+    expect(updateResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "nim",
+        key: "c-lang-intro",
       },
     });
 
     expect(getResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "nim",
-        title: "Nim program language and is a static language",
-        description: "This is Nim program note",
-        urlPattern: "/articles/nim",
+        key: "c-lang-intro",
+        title: "An Introduction to C Programming Language",
+        description: "This is a C programing language introduction",
+        urlPattern: "/articles/c-lang-intro",
         details: { foo: "bar" },
       },
     });

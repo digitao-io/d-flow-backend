@@ -1,7 +1,7 @@
-import { App } from "../main";
+import { App, Configuration, Context } from "../main";
 
-export async function runBeforeEach() {
-  const app = new App();
+export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(): Promise<App<CTX, CONFIG>> {
+  const app = new App<CTX, CONFIG>();
 
   await app.initialize({ configPath: "./config.test.json" });
 
@@ -9,4 +9,8 @@ export async function runBeforeEach() {
   await Promise.all(allCollections.map(collection => collection.deleteMany()));
 
   return app;
+}
+
+export async function runAfterEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(app: App<CTX, CONFIG>) {
+  await app.finalize();
 }

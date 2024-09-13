@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import { Express } from "express";
 import { Context } from "./context";
 import { Configuration, readConfiguration } from "./configuration";

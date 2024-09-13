@@ -19,8 +19,8 @@ export const pageDataValidation = {
     "details",
   ],
   properties: {
-    title: { type: "string", pattern: patterns.nonEmptyString(40) },
-    description: { type: "string", pattern: patterns.anyString(200) },
+    title: { type: "string", pattern: patterns.nonEmptyString(120) },
+    description: { type: "string", pattern: patterns.anyString(240) },
     urlPattern: { type: "string", pattern: patterns.urlPath() },
     details: { type: "object" },
   },
@@ -37,7 +37,7 @@ export const pageIdentifierValidation = {
     "key",
   ],
   properties: {
-    key: { type: "string", pattern: patterns.slug(40) },
+    key: { type: "string", pattern: patterns.slug(120) },
   },
 };
 

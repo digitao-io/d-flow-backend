@@ -1,11 +1,11 @@
-import { Configuration, Context, Handler } from "../../main";
-import { PageData, PageIdentifier, pageIdentifierValidation } from "./model";
+import { Configuration, Context, Handler, HandlerError } from "../../main";
+import { Page, PageIdentifier, pageIdentifierValidation, pageValidation } from "./model";
 
 export const pageUpdate: Handler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
-  PageData,
+  Page,
   PageIdentifier
 > = {
   namespace: "site",
@@ -13,12 +13,18 @@ export const pageUpdate: Handler<
   operation: "update",
 
   paramsValidation: pageIdentifierValidation,
+  dataValidation: pageValidation,
 
   async handle(ctx, { params, data }) {
-    await ctx.database.db().collection("pages").updateOne(
+    const updateResult = await ctx.database.db().collection("pages").updateOne(
       { key: params.key },
       { $set: data },
     );
-    return { data: { key: params.key } };
+
+    if (updateResult.modifiedCount < 1) {
+      throw new HandlerError("ENTITY_NOT_FOUND", `Page with key ${params.key} doesn't exist`);
+    }
+
+    return { data: { key: data.key } };
   },
 };

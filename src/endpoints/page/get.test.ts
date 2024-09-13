@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
-import { runBeforeEach } from "../../test/testutils";
-import supertest from "supertest";
+import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import * as supertest from "supertest";
 
 describe("/site/page/get", () => {
   let app: App< Context<Configuration>, Configuration>;
@@ -9,30 +9,34 @@ describe("/site/page/get", () => {
     app = await runBeforeEach();
   });
 
-  it("rejects if the page not exist", async () => {
+  afterEach(async () => {
+    await runAfterEach(app);
+  });
+
+  it("should response with 404 if page doens't exist", async () => {
     const response = await supertest(app.express)
       .post("/site/page/get")
       .send({
-        params: { },
+        params: { key: "c-intro" },
       });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
-      error: "INVALID_PARAMS",
-      message: expect.any(String),
+      error: "ENTITY_NOT_FOUND",
+      message: "Page with key c-intro doesn't exist",
     });
   });
 
-  it("returns page entity", async () => {
+  it("should response with correct page entity", async () => {
     await supertest(app.express)
       .post("/site/page/create")
       .send({
         data: {
-          key: "nim",
-          title: "Nim program language",
-          description: "This is Nim program note",
-          urlPattern: "/articles/nim",
+          key: "c-intro",
+          title: "C Programming Language Introduction",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-intro",
           details: { foo: "bar" },
         },
       });
@@ -40,19 +44,17 @@ describe("/site/page/get", () => {
     const response = await supertest(app.express)
       .post("/site/page/get")
       .send({
-        params: {
-          key: "nim",
-        },
+        params: { key: "c-intro" },
       });
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "nim",
-        title: "Nim program language",
-        description: "This is Nim program note",
-        urlPattern: "/articles/nim",
+        key: "c-intro",
+        title: "C Programming Language Introduction",
+        description: "This is a C programing language introduction",
+        urlPattern: "/articles/c-intro",
         details: { foo: "bar" },
       },
     });

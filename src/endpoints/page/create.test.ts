@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
-import { runBeforeEach } from "../../test/testutils";
-import supertest from "supertest";
+import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import * as supertest from "supertest";
 
 describe("/site/page/create", () => {
   let app: App< Context<Configuration>, Configuration>;
@@ -9,16 +9,20 @@ describe("/site/page/create", () => {
     app = await runBeforeEach();
   });
 
-  it("returns newly inserted page key", async () => {
+  afterEach(async () => {
+    await runAfterEach(app);
+  });
+
+  it("should return newly inserted page key", async () => {
     const response = await supertest(app.express)
       .post("/site/page/create")
       .send({
         data: {
-          key: "c",
-          title: "C program language",
-          description: "This is C program note",
-          urlPattern: "/page/articles-c",
-          details: { details: "C" },
+          key: "c-intro",
+          title: "C Programming Language Introduction",
+          description: "This is a C programing language introduction",
+          urlPattern: "/articles/c-intro",
+          details: { foo: "bar" },
         },
       });
 
@@ -26,7 +30,7 @@ describe("/site/page/create", () => {
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "c",
+        key: "c-intro",
       },
     });
   });

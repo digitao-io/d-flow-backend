@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
-import { runBeforeEach } from "../../test/testutils";
-import supertest from "supertest";
+import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import * as supertest from "supertest";
 
 describe("/site/page/list", () => {
   let app: App< Context<Configuration>, Configuration>;
@@ -9,7 +9,11 @@ describe("/site/page/list", () => {
     app = await runBeforeEach();
   });
 
-  it("if the page is empty", async () => {
+  afterEach(async () => {
+    await runAfterEach(app);
+  });
+
+  it("should response with an empty array if there is no page", async () => {
     const response = await supertest(app.express)
       .post("/site/page/list-all");
 
@@ -21,7 +25,7 @@ describe("/site/page/list", () => {
     });
   });
 
-  it("returns page all entity", async () => {
+  it("should return all pages", async () => {
     await supertest(app.express)
       .post("/site/page/create")
       .send({

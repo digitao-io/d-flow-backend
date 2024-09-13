@@ -1,12 +1,16 @@
 import { App, Configuration, Context } from "../../main";
-import { runBeforeEach } from "../../test/testutils";
-import supertest from "supertest";
+import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import * as supertest from "supertest";
 
 describe("/site/user/get", () => {
-  let app: App< Context<Configuration>, Configuration >;
+  let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
     app = await runBeforeEach();
+  });
+
+  afterEach(async () => {
+    await runAfterEach(app);
   });
 
   it("should response with 404, if the user doesn't exist", async () => {
