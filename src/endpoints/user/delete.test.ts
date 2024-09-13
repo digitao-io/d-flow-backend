@@ -1,70 +1,61 @@
 import { App, Configuration, Context } from "../../main";
+import { runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
 describe("/site/user/delete", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("users").drop();
+    app = await runBeforeEach();
   });
 
-  it("if the user not exist", async () => {
+  it("should response with 404, if the user doesn't exist", async () => {
     const response = await supertest(app.express)
       .post("/site/user/delete")
       .send({
-        params: {},
+        params: { username: "admin" },
       });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
-      error: "INVALID_PARAMS",
-      message: expect.any(String),
+      error: "ENTITY_NOT_FOUND",
+      message: "User with name admin doesn't exist",
     });
   });
 
-  it("delete a user entity", async () => {
+  it("should delete a user entity", async () => {
     await supertest(app.express)
       .post("/site/user/create")
       .send({
         data: {
           username: "admin",
           password: "password",
-          displayName: "Database name is admin",
-          email: "sing@gmail.com",
+          displayName: "Administrator",
+          email: "admin@example.com",
         },
       });
 
-    const response = await supertest(app.express)
+    const deleteResponse = await supertest(app.express)
       .post("/site/user/delete")
       .send({
-        params: {
-          username: "admin",
-        },
+        params: { username: "admin" },
       });
 
     const getResponse = await supertest(app.express)
       .post("/site/user/get")
       .send({
-        params: {
-          username: "admin",
-        },
+        params: { username: "admin" },
       });
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
+    expect(deleteResponse.status).toBe(200);
+    expect(deleteResponse.body).toEqual({
       status: "OK",
       data: {
         username: "admin",
       },
     });
 
-    expect(getResponse.body).toEqual({
-      status: "FAILED",
-      error: "ENTITY_NOT_FOUND",
-      message: expect.any(String),
-    });
+    expect(getResponse.status).toBe(404);
   });
 });

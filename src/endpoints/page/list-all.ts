@@ -10,10 +10,18 @@ export const pageList: Handler<
 > = {
   namespace: "site",
   entity: "page",
-  operation: "list",
+  operation: "list-all",
 
   async handle(ctx) {
-    const page = await ctx.database.db().collection<Page>("pages").find({ }, { projection: { _id: 0 } }).toArray();
-    return { data: page };
+    const pages = await ctx.database.db().collection("pages")
+      .find<Page>({}, { projection: { _id: 0 } })
+      .toArray();
+    const total = await ctx.database.db().collection("pages")
+      .countDocuments({});
+
+    return {
+      data: pages,
+      total,
+    };
   },
 };

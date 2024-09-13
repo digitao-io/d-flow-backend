@@ -1,26 +1,31 @@
 import { Configuration, Context, Handler } from "../../main";
-import { User, UserIdentifier, userValidation } from "./model";
+import { UserCreate, UserDatabase, UserIdentifier, userCreateValidation } from "./model";
 import * as crypto from "crypto";
 
 export const userCreate: Handler<
   Context<Configuration>,
   Configuration,
   undefined,
-  User,
+  UserCreate,
   UserIdentifier
 > = {
   namespace: "site",
   entity: "user",
   operation: "create",
 
-  dataValidation: userValidation,
+  dataValidation: userCreateValidation,
 
   async handle(ctx, { data }) {
-    if (data.password) {
-      const passwordHash = crypto.createHash("sha256").update(data.password).digest("hex");
-      data.password = passwordHash;
-    }
-    await ctx.database.db().collection("users").insertOne(data);
+    const userDatabase: UserDatabase = {
+      username: data.username,
+      displayName: data.displayName,
+      passwordHash: crypto.createHash("sha256").update(data.password).digest("hex"),
+      email: data.email,
+    };
+
+    await ctx.database.db().collection("users")
+      .insertOne(userDatabase);
+
     return { data: { username: data.username } };
   },
 };

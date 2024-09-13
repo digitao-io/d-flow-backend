@@ -9,14 +9,14 @@ import { Handler, wrapHandler } from "./handler";
 import { healthCheckRun } from "../endpoints/health-check/run";
 import { pageCreate } from "../endpoints/page/create";
 import { pageGet } from "../endpoints/page/get";
-import { pageList } from "../endpoints/page/list";
+import { pageList } from "../endpoints/page/list-all";
 import { pageUpdate } from "../endpoints/page/update";
 import { pageDelete } from "../endpoints/page/delete";
 import { userCreate } from "../endpoints/user/create";
 import { userGet } from "../endpoints/user/get";
 import { userDelete } from "../endpoints/user/delete";
 import { userUpdate } from "../endpoints/user/update";
-import { userList } from "../endpoints/user/list";
+import { userList } from "../endpoints/user/list-all";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;

@@ -1,13 +1,12 @@
 import { App, Configuration, Context } from "../../main";
+import { runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
 describe("/site/page/create", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").deleteMany();
+    app = await runBeforeEach();
   });
 
   it("returns newly inserted page key", async () => {

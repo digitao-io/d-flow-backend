@@ -15,13 +15,16 @@ export const userGet: Handler<
   paramsValidation: userIdentifierValidation,
 
   async handle(ctx, { params }) {
-    const user = await ctx.database.db().collection<User>("users").findOne(
-      { username: params.username },
-      { projection: { _id: 0 } },
-    );
+    const user = await ctx.database.db().collection("users")
+      .findOne<User | null>(
+        { username: params.username },
+        { projection: { _id: 0, passwordHash: 0 } },
+      );
+
     if (user === null) {
-      throw new HandlerError("ENTITY_NOT_FOUND", "The entity was not found.");
+      throw new HandlerError("ENTITY_NOT_FOUND", `User with name ${params.username} doesn't exist`);
     }
+
     return { data: user };
   },
 };

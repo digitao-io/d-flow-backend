@@ -1,23 +1,23 @@
 import { App, Configuration, Context } from "../../main";
+import { runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
 describe("/site/page/list", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("pages").drop();
+    app = await runBeforeEach();
   });
 
   it("if the page is empty", async () => {
     const response = await supertest(app.express)
-      .post("/site/page/list");
+      .post("/site/page/list-all");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",
       data: [],
+      total: 0,
     });
   });
 
@@ -47,7 +47,7 @@ describe("/site/page/list", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/page/list");
+      .post("/site/page/list-all");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
@@ -68,6 +68,7 @@ describe("/site/page/list", () => {
           details: { details: "cpp" },
         },
       ],
+      total: 2,
     });
   });
 });

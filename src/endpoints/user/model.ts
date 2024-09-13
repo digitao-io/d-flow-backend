@@ -1,7 +1,6 @@
 import { patterns } from "../../app/pattern";
 
 export interface UserData {
-  password: string;
   displayName: string;
   email: string;
 }
@@ -12,12 +11,42 @@ export const userDataValidation = {
   required: [
     "displayName",
     "email",
+  ],
+  properties: {
+    displayName: { type: "string", pattern: patterns.nonEmptyString(40) },
+    email: { type: "string", pattern: patterns.email() },
+  },
+};
+
+export interface UserDatabaseData {
+  passwordHash: string;
+}
+
+export interface UserCreateData {
+  password: string;
+}
+
+export const userCreateDataValidation = {
+  type: "object",
+  additionalPropeties: false,
+  required: [
     "password",
   ],
   properties: {
-    password: { type: "string", pattern: patterns.anyString(40) },
-    displayName: { type: "string", pattern: patterns.nonEmptyString(40) },
-    email: { type: "string", pattern: patterns.isEmail() },
+    password: { type: "string", pattern: patterns.nonEmptyString(40) },
+  },
+};
+
+export interface UserUpdateData {
+  password?: string;
+}
+
+export const userUpdateDataValidation = {
+  type: "object",
+  additionalPropeties: false,
+  required: [],
+  properties: {
+    password: { type: "string", pattern: patterns.nonEmptyString(40), nullable: true },
   },
 };
 
@@ -46,6 +75,42 @@ export const userValidation = {
     ...userIdentifierValidation.required,
   ],
   properties: {
+    ...userDataValidation.properties,
+    ...userIdentifierValidation.properties,
+  },
+};
+
+export interface UserDatabase extends UserDatabaseData, UserData, UserIdentifier {}
+
+export interface UserCreate extends UserCreateData, UserData, UserIdentifier {}
+
+export const userCreateValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    ...userCreateDataValidation.required,
+    ...userDataValidation.required,
+    ...userIdentifierValidation.required,
+  ],
+  properties: {
+    ...userCreateDataValidation.properties,
+    ...userDataValidation.properties,
+    ...userIdentifierValidation.properties,
+  },
+};
+
+export interface UserUpdate extends UserUpdateData, UserData, UserIdentifier {}
+
+export const userUpdateValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    ...userUpdateDataValidation.required,
+    ...userDataValidation.required,
+    ...userIdentifierValidation.required,
+  ],
+  properties: {
+    ...userUpdateDataValidation.properties,
     ...userDataValidation.properties,
     ...userIdentifierValidation.properties,
   },

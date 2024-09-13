@@ -1,48 +1,45 @@
 import { App, Configuration, Context } from "../../main";
+import { runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
 describe("/site/user/get", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
-    app = new App();
-    await app.initialize({ configPath: "./config.test.json" });
-    await app.context.database.db().collection("users").deleteMany();
+    app = await runBeforeEach();
   });
 
-  it("rejects if the user not exist", async () => {
+  it("should response with 404, if the user doesn't exist", async () => {
     const response = await supertest(app.express)
       .post("/site/user/get")
       .send({
-        params: { },
+        params: { username: "admin" },
       });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
-      error: "INVALID_PARAMS",
-      message: expect.any(String),
+      error: "ENTITY_NOT_FOUND",
+      message: "User with name admin doesn't exist",
     });
   });
 
-  it("returns user entity", async () => {
+  it("should return user entity without password field", async () => {
     await supertest(app.express)
       .post("/site/user/create")
       .send({
         data: {
           username: "admin",
           password: "password",
-          displayName: "Database name is admin",
-          email: "sing@gmail.com",
+          displayName: "Administrator",
+          email: "admin@example.com",
         },
       });
 
     const response = await supertest(app.express)
       .post("/site/user/get")
       .send({
-        params: {
-          username: "admin",
-        },
+        params: { username: "admin" },
       });
 
     expect(response.status).toBe(200);
@@ -50,9 +47,8 @@ describe("/site/user/get", () => {
       status: "OK",
       data: {
         username: "admin",
-        password: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-        displayName: "Database name is admin",
-        email: "sing@gmail.com",
+        displayName: "Administrator",
+        email: "admin@example.com",
       },
     });
   });

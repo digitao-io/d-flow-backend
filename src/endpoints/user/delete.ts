@@ -1,4 +1,4 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, Handler, HandlerError } from "../../main";
 import { UserIdentifier, userIdentifierValidation } from "./model";
 
 export const userDelete: Handler<
@@ -15,7 +15,13 @@ export const userDelete: Handler<
   paramsValidation: userIdentifierValidation,
 
   async handle(ctx, { params }) {
-    await ctx.database.db().collection("users").deleteOne({ username: params.username });
+    const deleteResult = await ctx.database.db().collection("users")
+      .deleteOne({ username: params.username });
+
+    if (deleteResult.deletedCount < 1) {
+      throw new HandlerError("ENTITY_NOT_FOUND", `User with name ${params.username} doesn't exist`);
+    }
+
     return { data: { username: params.username } };
   },
 };

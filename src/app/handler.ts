@@ -41,14 +41,6 @@ export class HandlerError extends Error {
   }
 }
 
-export type HandlerOperation =
-  | "create"
-  | "list"
-  | "get"
-  | "update"
-  | "delete"
-  | "run";
-
 export interface Handler<
   CTX extends Context<CONFIG>,
   CONFIG extends Configuration,
@@ -58,7 +50,7 @@ export interface Handler<
 > {
   namespace: string;
   entity: string;
-  operation: HandlerOperation;
+  operation: string;
 
   permissionRequired?: true;
 
