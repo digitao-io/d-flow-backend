@@ -72,7 +72,7 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(fileGet);
     this.register(fileUpdate);
     this.register(fileDelete);
-    this.register(fileList)
+    this.register(fileList);
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
