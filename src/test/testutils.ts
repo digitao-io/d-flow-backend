@@ -6,7 +6,7 @@ export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends 
   await app.initialize({ configPath: "./config.test.json" });
 
   const allCollections = await app.context.database.db().collections();
-  await Promise.all(allCollections.map(collection => collection.deleteMany()));
+  await Promise.all(allCollections.map((collection) => collection.deleteMany()));
 
   return app;
 }

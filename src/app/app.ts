@@ -17,6 +17,11 @@ import { userGet } from "../endpoints/user/get";
 import { userDelete } from "../endpoints/user/delete";
 import { userUpdate } from "../endpoints/user/update";
 import { userList } from "../endpoints/user/list-all";
+import { fileCreate } from "../endpoints/file/create";
+import { fileGet } from "../endpoints/file/get";
+import { fileUpdate } from "../endpoints/file/update";
+import { fileDelete } from "../endpoints/file/delete";
+import { fileList } from "../endpoints/file/list";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -34,8 +39,8 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   }
 
   public async initialize(params: AppInitializeParams<CTX, CONFIG>) {
-    params.setupConfiguration = params.setupConfiguration ?? (config => config as CONFIG);
-    params.setupContext = params.setupContext ?? (context => context as CTX);
+    params.setupConfiguration = params.setupConfiguration ?? ((config) => config as CONFIG);
+    params.setupContext = params.setupContext ?? ((context) => context as CTX);
 
     const configuration = params.setupConfiguration(readConfiguration(params.configPath));
     const database = await setupDatabase(configuration);
@@ -62,6 +67,12 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(userDelete);
     this.register(userUpdate);
     this.register(userList);
+
+    this.register(fileCreate);
+    this.register(fileGet);
+    this.register(fileUpdate);
+    this.register(fileDelete);
+    this.register(fileList)
   }
 
   public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
