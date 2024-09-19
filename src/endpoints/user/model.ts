@@ -102,3 +102,25 @@ export const userUpdateValidation = {
     ...userIdentifierValidation.properties,
   },
 };
+
+export interface UserLogin {
+  username: string;
+  password: string;
+}
+
+export const userLoginValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "username",
+    "password",
+  ],
+  properties: {
+    username: { type: "string", pattern: patterns.slug(40) },
+    password: { type: "string", pattern: patterns.nonEmptyString(40) },
+  },
+};
+
+export interface UserLoginResponse {
+  jwt: string;
+}

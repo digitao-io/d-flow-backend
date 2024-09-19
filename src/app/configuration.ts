@@ -5,7 +5,7 @@ export interface Configuration {
   port: number;
   database: ConfigurationDatabase;
   objstorage: ConfigurationObjstorage;
-  admins: ConfigurationCredential[];
+  users: ConfigurationCredential[];
   jwt: ConfigurationJwt;
 }
 
@@ -32,7 +32,7 @@ export interface ConfigurationCredential {
 
 export interface ConfigurationJwt {
   serverSecret: string;
-  expireIn: string;
+  expireIn: number;
 }
 
 export function readConfiguration<CONFIG extends Configuration>(configPath: string): CONFIG {
