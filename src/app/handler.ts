@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { Request, Response, RequestHandler } from "express";
 import { Ajv, DefinedError } from "ajv";
 import { Configuration } from "./configuration";
 import { Context } from "./context";
@@ -59,7 +59,12 @@ export interface Handler<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataValidation?: any;
 
-  handle: (ctx: CTX, input: HandlerInput<PARAMS, DATA>) => Promise<HandlerResponse<RESPONSE>>;
+  handle: (ctx: CTX, input: HandlerInput<PARAMS, DATA>, expressCtx: ExpressCtx) => Promise<HandlerResponse<RESPONSE>>;
+}
+
+export interface ExpressCtx {
+  req: Request;
+  res: Response;
 }
 
 export function wrapHandler<
@@ -108,10 +113,14 @@ export function wrapHandler<
     }
 
     try {
-      const response = await handler.handle(ctx, {
-        params: req.body?.params,
-        data: req.body?.data,
-      });
+      const response = await handler.handle(
+        ctx,
+        {
+          params: req.body?.params,
+          data: req.body?.data,
+        },
+        { req, res },
+      );
 
       res.status(200);
       res.json({

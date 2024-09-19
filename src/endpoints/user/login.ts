@@ -1,5 +1,5 @@
 import { Configuration, Context, Handler, HandlerError } from "../../main";
-import { UserLogin, UserLoginResponse, userLoginValidation } from "./model";
+import { UserLogin, userLoginValidation } from "./model";
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 
@@ -8,7 +8,7 @@ export const userLogin: Handler<
   Configuration,
   undefined,
   UserLogin,
-  UserLoginResponse
+  undefined
 > = {
   namespace: "site",
   entity: "user",
@@ -16,7 +16,7 @@ export const userLogin: Handler<
 
   dataValidation: userLoginValidation,
 
-  async handle(ctx, { data }) {
+  async handle(ctx, { data }, { res }) {
     const username = data.username;
     const passwordHash = crypto.createHash("sha256").update(data.password).digest("hex");
 
@@ -50,10 +50,12 @@ export const userLogin: Handler<
       { algorithm: "HS256" },
     );
 
-    return {
-      data: {
-        jwt: jwtString,
-      },
-    };
+    res.cookie("jwt", jwtString, {
+      maxAge: ctx.configuration.jwt.expireIn * 1000,
+      httpOnly: true,
+      path: "/",
+    });
+
+    return { data: undefined };
   },
 };
