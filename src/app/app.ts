@@ -25,7 +25,7 @@ import { fileCreate } from "../endpoints/file/create";
 import { fileGet } from "../endpoints/file/get";
 import { fileUpdate } from "../endpoints/file/update";
 import { fileDelete } from "../endpoints/file/delete";
-import { fileList } from "../endpoints/file/list";
+import { fileList } from "../endpoints/file/list-all";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;

@@ -4,8 +4,8 @@ import {
   Handler,
 } from "../../main";
 import {
-  FileCreateAndUpdate,
-  fileCreateAndUpdateValidation,
+  FileCreate,
+  fileCreateValidation,
   FileDatabase,
   FileIdentifier,
 } from "./model";
@@ -14,14 +14,14 @@ export const fileCreate: Handler<
   Context<Configuration>,
   Configuration,
   undefined,
-  FileCreateAndUpdate,
+  FileCreate,
   FileIdentifier
 > = {
   namespace: "site",
   entity: "file",
   operation: "create",
 
-  dataValidation: fileCreateAndUpdateValidation,
+  dataValidation: fileCreateValidation,
 
   async handle(ctx, { data }) {
     const now = new Date();

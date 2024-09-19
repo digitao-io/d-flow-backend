@@ -2,8 +2,6 @@ import { patterns } from "../../app/pattern";
 
 export interface FileData {
   description: string;
-  mimeType: string;
-  sizeInBytes: number;
 }
 
 export const fileDataValidation = {
@@ -11,11 +9,25 @@ export const fileDataValidation = {
   additionalProperties: false,
   required: [
     "description",
+  ],
+  properties: {
+    description: { type: "string", pattern: patterns.anyString(400) },
+  },
+};
+
+export interface FileCreateData {
+  mimeType: string;
+  sizeInBytes: number;
+}
+
+export const fileCreateDataValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
     "mimeType",
     "sizeInBytes",
   ],
   properties: {
-    description: { type: "string", pattern: patterns.anyString(400) },
     mimeType: { type: "string", pattern: patterns.mimetype() },
     sizeInBytes: { type: "integer", minimum: 1 },
   },
@@ -46,11 +58,28 @@ export interface FileResponseData {
 
 export interface FileResponse extends FileData, FileResponseData, FileIdentifier {}
 
-export interface FileDatabase extends FileData, FileIdentifier, FileDatabaseData {}
+export interface FileDatabase extends FileData, FileIdentifier, FileDatabaseData, FileCreateData {}
 
-export interface FileCreateAndUpdate extends FileData, FileIdentifier {}
+export interface FileCreate extends FileData, FileCreateData, FileIdentifier {}
 
-export const fileCreateAndUpdateValidation = {
+export const fileCreateValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    ...fileDataValidation.required,
+    ...fileCreateDataValidation.required,
+    ...fileIdentifierValidation.required,
+  ],
+  properties: {
+    ...fileDataValidation.properties,
+    ...fileCreateDataValidation.properties,
+    ...fileIdentifierValidation.properties,
+  },
+};
+
+export interface FileUpdate extends FileData, FileIdentifier {}
+
+export const fileUpdateValidation = {
   type: "object",
   additionalProperties: false,
   required: [

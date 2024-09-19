@@ -23,8 +23,6 @@ describe("/site/file/update", () => {
         data: {
           key: "cpp-teache",
           description: "Cpp Programming Language learn video",
-          mimeType: "video/mp4",
-          sizeInBytes: 12,
         },
       });
 
@@ -53,11 +51,6 @@ describe("/site/file/update", () => {
         },
       });
 
-    jest.useFakeTimers({
-      doNotFake: ["nextTick"],
-      now: new Date("2024-09-02T00:00:00.000Z"),
-    });
-
     const updateResponse = await supertest(app.express)
       .post("/site/file/update")
       .send({
@@ -67,8 +60,6 @@ describe("/site/file/update", () => {
         data: {
           key: "cpp-teache",
           description: "Cpp Programming Language learn video",
-          mimeType: "video/mp4",
-          sizeInBytes: 13,
         },
       });
 
@@ -92,8 +83,8 @@ describe("/site/file/update", () => {
         key: "cpp-teache",
         description: "Cpp Programming Language learn video",
         mimeType: "video/mp4",
-        sizeInBytes: 13,
-        createdAt: "2024-09-02T00:00:00.000Z",
+        sizeInBytes: 12,
+        createdAt: "2024-09-01T00:00:00.000Z",
       },
     });
   });

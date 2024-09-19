@@ -5,8 +5,8 @@ import {
   HandlerError,
 } from "../../main";
 import {
-  FileCreateAndUpdate,
-  fileCreateAndUpdateValidation,
+  FileUpdate,
+  fileUpdateValidation,
   FileDatabase,
   FileIdentifier,
   fileIdentifierValidation,
@@ -16,7 +16,7 @@ export const fileUpdate: Handler<
   Context<Configuration>,
   Configuration,
   FileIdentifier,
-  FileCreateAndUpdate,
+  FileUpdate,
   FileIdentifier
 > = {
   namespace: "site",
@@ -24,16 +24,12 @@ export const fileUpdate: Handler<
   operation: "update",
 
   paramsValidation: fileIdentifierValidation,
-  dataValidation: fileCreateAndUpdateValidation,
+  dataValidation: fileUpdateValidation,
 
   async handle(ctx, { params, data }) {
-    const now = new Date();
     const fileDatabase: Partial<FileDatabase> = {
       key: data.key,
       description: data.description,
-      mimeType: data.mimeType,
-      sizeInBytes: data.sizeInBytes,
-      createdAt: now,
     };
 
     const updateResult = await ctx.database.db().collection("files")
