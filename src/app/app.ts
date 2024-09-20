@@ -20,6 +20,7 @@ import { userDelete } from "../endpoints/user/delete";
 import { userUpdate } from "../endpoints/user/update";
 import { userList } from "../endpoints/user/list-all";
 import { userLogin } from "../endpoints/user/login";
+import { userAuthorize } from "../endpoints/user/authorize";
 
 import { fileCreate } from "../endpoints/file/create";
 import { fileGet } from "../endpoints/file/get";
@@ -72,6 +73,7 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(userUpdate);
     this.register(userList);
     this.register(userLogin);
+    this.register(userAuthorize);
 
     this.register(fileCreate);
     this.register(fileGet);

@@ -1,7 +1,6 @@
 {
   "domain": "localhost",
   "port": 3000,
-
   "database": {
     "host": "localhost",
     "port": 27017,
@@ -9,7 +8,6 @@
     "password": "no-password",
     "database": "website_test"
   },
-
   "objstorage": {
     "host": "localhost",
     "port": 9000,
@@ -17,14 +15,12 @@
     "password": "no-password",
     "bucket": "website-test"
   },
-
   "users": [
     {
       "username": "testuser",
       "passwordHash": "916f37ba7eb4459bc5c2e7a13a5b89882c2ced553dc8e29c753b12b74eb46412"
     }
   ],
-
   "jwt": {
     "serverSecret": "no-secret",
     "expireIn": 3600

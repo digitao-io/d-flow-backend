@@ -2,6 +2,7 @@ import { Request, Response, RequestHandler } from "express";
 import { Ajv, DefinedError } from "ajv";
 import { Configuration } from "./configuration";
 import { Context } from "./context";
+import { verifyJwt } from "./jwt";
 
 export interface HandlerInput<
   PARAMS,
@@ -52,7 +53,7 @@ export interface Handler<
   entity: string;
   operation: string;
 
-  permissionRequired?: true;
+  authorizationRequired?: true;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   paramsValidation?: any;
@@ -86,33 +87,33 @@ export function wrapHandler<
     : null;
 
   return async (req, res) => {
-    if (validateParams && !validateParams(req.body?.params)) {
-      const errors = validateParams.errors! as DefinedError[];
-
-      res.status(400);
-      res.json({
-        status: "FAILED",
-        error: "INVALID_PARAMS",
-        message: `${errors[0].instancePath || "/"} ${errors[0].message}`,
-      });
-
-      return;
-    }
-
-    if (validateData && !validateData(req.body?.data)) {
-      const errors = validateData.errors! as DefinedError[];
-
-      res.status(400);
-      res.json({
-        status: "FAILED",
-        error: "INVALID_DATA",
-        message: `${errors[0].instancePath || "/"} ${errors[0].message}`,
-      });
-
-      return;
-    }
-
     try {
+      if (handler.authorizationRequired) {
+        const jwtCookie = (req.header("Cookie") ?? "").split(";").find((cookie) => cookie.split("=")[0] === "jwt");
+
+        if (!jwtCookie) {
+          throw new HandlerError("AUTH_FAILED", "Authorization failed");
+        }
+
+        const token = jwtCookie.split("=")[1];
+
+        if (!verifyJwt(token, ctx.configuration.jwt.serverSecret)) {
+          throw new HandlerError("AUTH_FAILED", "Authorization failed");
+        }
+      }
+
+      if (validateParams && !validateParams(req.body?.params)) {
+        const errors = validateParams.errors! as DefinedError[];
+
+        throw new HandlerError("INVALID_PARAMS", `${errors[0].instancePath || "/"} ${errors[0].message}`);
+      }
+
+      if (validateData && !validateData(req.body?.data)) {
+        const errors = validateData.errors! as DefinedError[];
+
+        throw new HandlerError("INVALID_DATA", `${errors[0].instancePath || "/"} ${errors[0].message}`);
+      }
+
       const response = await handler.handle(
         ctx,
         {

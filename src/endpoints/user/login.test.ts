@@ -30,7 +30,7 @@ describe("/site/user/login", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers["set-cookie"]).toEqual([
-      "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWF0IjoxNzI1MTQ4ODAwLCJuYmYiOjE3MjUxNDg4MDAsImV4cCI6MTcyNTE1MjQwMH0.Xz49egE33ynVqyhlQX8Qmw795cG86aH6b5Yd6kzBv-A; Max-Age=3600; Path=/; Expires=Sun, 01 Sep 2024 01:00:00 GMT; HttpOnly",
+      "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWF0IjoxNzI1MTQ4ODAwLCJuYmYiOjE3MjUxNDg4MDAsImV4cCI6MTcyNTE1MjQwMH0.Xz49egE33ynVqyhlQX8Qmw795cG86aH6b5Yd6kzBv-A; Max-Age=3600; Domain=localhost; Path=/; Expires=Sun, 01 Sep 2024 01:00:00 GMT; HttpOnly",
     ]);
     expect(response.body).toEqual({
       status: "OK",
@@ -60,7 +60,7 @@ describe("/site/user/login", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers["set-cookie"]).toEqual([
-      "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzI1MTQ4ODAwLCJuYmYiOjE3MjUxNDg4MDAsImV4cCI6MTcyNTE1MjQwMH0.T6qqarFz02HDwixtiuvq_RQ3U1U1_34p7gVWhWxYZ48; Max-Age=3600; Path=/; Expires=Sun, 01 Sep 2024 01:00:00 GMT; HttpOnly",
+      "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzI1MTQ4ODAwLCJuYmYiOjE3MjUxNDg4MDAsImV4cCI6MTcyNTE1MjQwMH0.T6qqarFz02HDwixtiuvq_RQ3U1U1_34p7gVWhWxYZ48; Max-Age=3600; Domain=localhost; Path=/; Expires=Sun, 01 Sep 2024 01:00:00 GMT; HttpOnly",
     ]);
     expect(response.body).toEqual({
       status: "OK",
