@@ -42,7 +42,6 @@ describe("/site/user/logout", () => {
     const response = await supertest(app.express)
       .post("/site/user/logout");
 
-    console.log(response.body);
     expect(response.status).toBe(200);
     expect(response.headers["set-cookie"]).toEqual([
       "jwt=; Max-Age=0; Path=/; Expires=Sun, 01 Sep 2024 00:00:00 GMT; HttpOnly",

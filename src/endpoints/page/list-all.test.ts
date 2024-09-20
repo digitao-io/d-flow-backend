@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/page/list", () => {
@@ -31,8 +31,11 @@ describe("/site/page/list", () => {
       now: new Date("2024-01-01T00:00:00.000Z"),
     });
 
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/page/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-intro",
@@ -45,6 +48,7 @@ describe("/site/page/list", () => {
 
     await supertest(app.express)
       .post("/site/page/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "cpp-intro",

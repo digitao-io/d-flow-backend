@@ -23,6 +23,7 @@ export const pageUpdate: Handler<
   entity: "page",
   operation: "update",
 
+  authorizationRequired: true,
   paramsValidation: pageIdentifierValidation,
   dataValidation: pageCreateAndUpdateValidation,
 

@@ -12,6 +12,7 @@ export const pageDelete: Handler<
   entity: "page",
   operation: "delete",
 
+  authorizationRequired: true,
   paramsValidation: pageIdentifierValidation,
 
   async handle(ctx, { params }) {

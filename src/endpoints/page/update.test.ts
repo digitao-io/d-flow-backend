@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/page/update", () => {
@@ -14,8 +14,11 @@ describe("/site/page/update", () => {
   });
 
   it("should response with 404 if the page doens't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/page/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: {
           key: "c-intro",
@@ -43,8 +46,11 @@ describe("/site/page/update", () => {
       now: new Date("2024-01-01T00:00:00.000Z"),
     });
 
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/page/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-intro",
@@ -57,10 +63,12 @@ describe("/site/page/update", () => {
 
     jest.useFakeTimers({
       doNotFake: ["nextTick"],
-      now: new Date("2024-01-02T00:00:00.000Z"),
+      now: new Date("2024-01-01T00:05:00.000Z"),
     });
+
     const updateResponse = await supertest(app.express)
       .post("/site/page/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: {
           key: "c-intro",
@@ -97,7 +105,7 @@ describe("/site/page/update", () => {
         urlPattern: "/articles/c-lang-intro",
         details: { foo: "bar" },
         createdAt: "2024-01-01T00:00:00.000Z",
-        updatedAt: "2024-01-02T00:00:00.000Z",
+        updatedAt: "2024-01-01T00:05:00.000Z",
       },
     });
   });

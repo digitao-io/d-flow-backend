@@ -12,6 +12,7 @@ export const pageCreate: Handler<
   entity: "page",
   operation: "create",
 
+  authorizationRequired: true,
   dataValidation: pageCreateAndUpdateValidation,
 
   async handle(ctx, { data }) {

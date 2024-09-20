@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/page/delete", () => {
@@ -14,8 +14,11 @@ describe("/site/page/delete", () => {
   });
 
   it("should response with 404, if the page doesn't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/page/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-intro" },
       });
@@ -29,8 +32,11 @@ describe("/site/page/delete", () => {
   });
 
   it("should delete page correctly", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/page/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-intro",
@@ -43,6 +49,7 @@ describe("/site/page/delete", () => {
 
     const deleteResponse = await supertest(app.express)
       .post("/site/page/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-intro" },
       });
