@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/user/create", () => {
@@ -14,8 +14,11 @@ describe("/site/user/create", () => {
   });
 
   it("should response with newly inserted username", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "admin",

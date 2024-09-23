@@ -15,6 +15,7 @@ export const userUpdate: Handler<
 
   paramsValidation: userIdentifierValidation,
   dataValidation: userUpdateValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params, data }) {
     const userDatabase: Partial<UserDatabase> = {

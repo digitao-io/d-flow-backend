@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/user/update", () => {
@@ -14,8 +14,11 @@ describe("/site/user/update", () => {
   });
 
   it("should response with 404, if the user doesn't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/user/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
         data: {
@@ -34,8 +37,11 @@ describe("/site/user/update", () => {
   });
 
   it("should update the existing user", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "admin",
@@ -47,6 +53,7 @@ describe("/site/user/update", () => {
 
     const updateResponse = await supertest(app.express)
       .post("/site/user/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
         data: {
@@ -59,6 +66,7 @@ describe("/site/user/update", () => {
 
     const getResponse = await supertest(app.express)
       .post("/site/user/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin-one" },
       });

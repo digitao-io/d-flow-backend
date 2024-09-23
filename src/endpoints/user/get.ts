@@ -13,6 +13,7 @@ export const userGet: Handler<
   operation: "get",
 
   paramsValidation: userIdentifierValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params }) {
     const user = await ctx.database.db().collection("users")

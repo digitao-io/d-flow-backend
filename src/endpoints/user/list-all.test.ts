@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/user/list-all", () => {
@@ -14,8 +14,11 @@ describe("/site/user/list-all", () => {
   });
 
   it("should return empty array, if there is no user", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
-      .post("/site/user/list-all");
+      .post("/site/user/list-all")
+      .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
@@ -26,8 +29,11 @@ describe("/site/user/list-all", () => {
   });
 
   it("should response with all users", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "admin",
@@ -39,6 +45,7 @@ describe("/site/user/list-all", () => {
 
     await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "john-doe",
@@ -49,7 +56,8 @@ describe("/site/user/list-all", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/user/list-all");
+      .post("/site/user/list-all")
+      .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

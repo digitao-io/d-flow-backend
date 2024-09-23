@@ -12,6 +12,8 @@ export const userList: Handler<
   entity: "user",
   operation: "list-all",
 
+  authorizationRequired: true,
+
   async handle(ctx) {
     const users = await ctx.database.db().collection("users")
       .find<UserResponse>({}, { projection: { _id: 0, passwordHash: 0 } })

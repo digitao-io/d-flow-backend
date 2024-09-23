@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/user/delete", () => {
@@ -14,8 +14,11 @@ describe("/site/user/delete", () => {
   });
 
   it("should response with 404, if the user doesn't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/user/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
       });
@@ -29,8 +32,10 @@ describe("/site/user/delete", () => {
   });
 
   it("should delete a user entity", async () => {
+    const jwtCookie = await getAuthCookie(app);
     await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "admin",
@@ -42,12 +47,14 @@ describe("/site/user/delete", () => {
 
     const deleteResponse = await supertest(app.express)
       .post("/site/user/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
       });
 
     const getResponse = await supertest(app.express)
       .post("/site/user/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
       });

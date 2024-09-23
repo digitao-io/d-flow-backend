@@ -13,6 +13,7 @@ export const userDelete: Handler<
   operation: "delete",
 
   paramsValidation: userIdentifierValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params }) {
     const deleteResult = await ctx.database.db().collection("users")

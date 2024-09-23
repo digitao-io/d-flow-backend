@@ -14,6 +14,7 @@ export const userCreate: Handler<
   operation: "create",
 
   dataValidation: userCreateValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { data }) {
     const userDatabase: UserDatabase = {

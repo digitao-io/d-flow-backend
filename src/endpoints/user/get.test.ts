@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/user/get", () => {
@@ -14,8 +14,11 @@ describe("/site/user/get", () => {
   });
 
   it("should response with 404, if the user doesn't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/user/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
       });
@@ -29,8 +32,11 @@ describe("/site/user/get", () => {
   });
 
   it("should return user entity without password field", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/user/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           username: "admin",
@@ -42,6 +48,7 @@ describe("/site/user/get", () => {
 
     const response = await supertest(app.express)
       .post("/site/user/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
       });
