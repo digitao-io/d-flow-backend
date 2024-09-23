@@ -22,6 +22,7 @@ export const fileCreate: Handler<
   operation: "create",
 
   dataValidation: fileCreateValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { data }) {
     const now = new Date();

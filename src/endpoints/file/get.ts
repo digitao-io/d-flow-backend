@@ -23,6 +23,7 @@ export const fileGet: Handler<
   operation: "get",
 
   paramsValidation: fileIdentifierValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params }) {
     const file = await ctx.database.db().collection("files")

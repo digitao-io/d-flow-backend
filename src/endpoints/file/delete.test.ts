@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/file/delete", () => {
@@ -14,8 +14,11 @@ describe("/site/file/delete", () => {
   });
 
   it("should response with 404, if the file doesn't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/file/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "cteache" },
       });
@@ -29,8 +32,11 @@ describe("/site/file/delete", () => {
   });
 
   it("should delete file correctly", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-teache",
@@ -42,12 +48,14 @@ describe("/site/file/delete", () => {
 
     const deleteResponse = await supertest(app.express)
       .post("/site/file/delete")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache" },
       });
 
     const getResponse = await supertest(app.express)
       .post("/site/file/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache" },
       });

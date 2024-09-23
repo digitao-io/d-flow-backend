@@ -21,6 +21,7 @@ export const fileDelete: Handler<
   operation: "delete",
 
   paramsValidation: fileIdentifierValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params }) {
     const deleteResult = await ctx.database.db().collection("files")

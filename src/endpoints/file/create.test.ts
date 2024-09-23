@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/file/create", () => {
@@ -14,8 +14,11 @@ describe("/site/file/create", () => {
   });
 
   it("should return newly inserted file key", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-teache",

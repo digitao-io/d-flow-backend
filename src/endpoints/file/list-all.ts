@@ -12,6 +12,8 @@ export const fileList: Handler<
   entity: "file",
   operation: "list-all",
 
+  authorizationRequired: true,
+
   async handle(ctx) {
     const files = await ctx.database.db().collection("files")
       .find<FileDatabase>({}, { projection: { _id: 0 } })

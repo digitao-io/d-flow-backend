@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/file/update", () => {
@@ -14,8 +14,11 @@ describe("/site/file/update", () => {
   });
 
   it("should response with 404 if the file doens't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/file/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: {
           key: "c-teache",
@@ -40,8 +43,11 @@ describe("/site/file/update", () => {
       now: new Date("2024-09-01T00:00:00.000Z"),
     });
 
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-teache",
@@ -53,6 +59,7 @@ describe("/site/file/update", () => {
 
     const updateResponse = await supertest(app.express)
       .post("/site/file/update")
+      .set("Cookie", [jwtCookie])
       .send({
         params: {
           key: "c-teache",
@@ -65,6 +72,7 @@ describe("/site/file/update", () => {
 
     const getResponse = await supertest(app.express)
       .post("/site/file/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "cpp-teache" },
       });

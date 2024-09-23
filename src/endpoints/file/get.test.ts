@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/file/get", () => {
@@ -14,8 +14,11 @@ describe("/site/file/get", () => {
   });
 
   it("should response with 404 if file donse't exist", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
       .post("/site/file/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache" },
       });
@@ -34,8 +37,11 @@ describe("/site/file/get", () => {
       now: new Date("2024-09-01T00:00:00.000Z"),
     });
 
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-teache",
@@ -47,6 +53,7 @@ describe("/site/file/get", () => {
 
     const response = await supertest(app.express)
       .post("/site/file/get")
+      .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache" },
       });

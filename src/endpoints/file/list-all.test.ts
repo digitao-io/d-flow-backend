@@ -1,5 +1,5 @@
 import { App, Configuration, Context } from "../../main";
-import { runAfterEach, runBeforeEach } from "../../test/testutils";
+import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import * as supertest from "supertest";
 
 describe("/site/file/list", () => {
@@ -14,8 +14,11 @@ describe("/site/file/list", () => {
   });
 
   it("should response with an empty array if there is no file", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
     const response = await supertest(app.express)
-      .post("/site/file/list-all");
+      .post("/site/file/list-all")
+      .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
@@ -31,8 +34,11 @@ describe("/site/file/list", () => {
       now: new Date("2024-09-01T00:00:00.000Z"),
     });
 
+    const jwtCookie = await getAuthCookie(app);
+
     await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "c-teache",
@@ -44,6 +50,7 @@ describe("/site/file/list", () => {
 
     await supertest(app.express)
       .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
       .send({
         data: {
           key: "cpp-teache",
@@ -54,7 +61,8 @@ describe("/site/file/list", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/file/list-all");
+      .post("/site/file/list-all")
+      .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

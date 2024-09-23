@@ -25,6 +25,7 @@ export const fileUpdate: Handler<
 
   paramsValidation: fileIdentifierValidation,
   dataValidation: fileUpdateValidation,
+  authorizationRequired: true,
 
   async handle(ctx, { params, data }) {
     const fileDatabase: Partial<FileDatabase> = {
