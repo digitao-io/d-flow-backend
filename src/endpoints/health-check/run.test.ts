@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
 import { runBeforeEach, runAfterEach } from "../../test/testutils";
-import * as supertest from "supertest";
+import supertest from "supertest";
 
 describe("/site/health-check/run", () => {
   let app: App< Context<Configuration>, Configuration>;

@@ -1,6 +1,6 @@
 import { Configuration, Context, WrappedHandler } from "../../main";
 import { UserCreate, UserDatabase, UserIdentifier, userCreateValidation } from "./model";
-import * as crypto from "crypto";
+import crypto from "crypto";
 
 export const userCreate: WrappedHandler<
   Context<Configuration>,

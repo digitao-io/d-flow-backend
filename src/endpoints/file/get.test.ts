@@ -1,6 +1,6 @@
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
-import * as supertest from "supertest";
+import supertest from "supertest";
 
 describe("/site/file/get", () => {
   let app: App< Context<Configuration>, Configuration >;

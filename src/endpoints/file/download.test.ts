@@ -1,5 +1,5 @@
-import * as path from "node:path";
-import * as supertest from "supertest";
+import path from "node:path";
+import supertest from "supertest";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 

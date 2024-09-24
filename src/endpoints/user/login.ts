@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import { signJwt } from "../../app/jwt";
 import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { UserLogin, userLoginValidation } from "./model";

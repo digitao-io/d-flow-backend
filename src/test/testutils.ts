@@ -1,4 +1,4 @@
-import * as supertest from "supertest";
+import supertest from "supertest";
 import { App, Configuration, Context } from "../main";
 
 export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(): Promise<App<CTX, CONFIG>> {

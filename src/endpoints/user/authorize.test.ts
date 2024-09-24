@@ -1,4 +1,4 @@
-import * as supertest from "supertest";
+import supertest from "supertest";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 

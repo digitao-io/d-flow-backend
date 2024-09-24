@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { UserUpdate, UserDatabase, UserIdentifier, userIdentifierValidation, userUpdateValidation } from "./model";
 

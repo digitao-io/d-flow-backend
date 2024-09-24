@@ -1,4 +1,4 @@
-import * as multer from "multer";
+import multer from "multer";
 import { Configuration, Context } from "../../main";
 import { verifyJwt } from "../../app/jwt";
 import { HandlerError, RawHandler, sendError, sendResponse } from "../../app/handler";
