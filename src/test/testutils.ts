@@ -1,14 +1,10 @@
 import supertest from "supertest";
 import { App, Configuration, Context } from "../main";
 
-export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(): Promise<App<CTX, CONFIG>> {
+export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(app: App<CTX, CONFIG>) {
   jest.clearAllTimers();
   jest.useRealTimers();
   jest.clearAllMocks();
-
-  const app = new App<CTX, CONFIG>();
-
-  await app.initialize({ configPath: "./config.test.json" });
 
   const allCollections = await app.context.database.db().collections();
   await Promise.all(allCollections.map((collection) => collection.deleteMany()));
@@ -18,8 +14,6 @@ export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends 
     app.context.configuration.objstorage.bucket,
     object.name,
   )));
-
-  return app;
 }
 
 export async function runAfterEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(app: App<CTX, CONFIG>) {

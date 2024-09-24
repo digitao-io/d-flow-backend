@@ -6,7 +6,9 @@ describe("/site/user/create", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
-    app = await runBeforeEach();
+    app = new App();
+    await app.initialize({ configPath: "./config.test.json" });
+    await runBeforeEach(app);
   });
 
   afterEach(async () => {
