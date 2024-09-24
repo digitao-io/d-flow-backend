@@ -2,12 +2,22 @@ import * as supertest from "supertest";
 import { App, Configuration, Context } from "../main";
 
 export async function runBeforeEach<CTX extends Context<CONFIG>, CONFIG extends Configuration>(): Promise<App<CTX, CONFIG>> {
+  jest.clearAllTimers();
+  jest.useRealTimers();
+  jest.clearAllMocks();
+
   const app = new App<CTX, CONFIG>();
 
   await app.initialize({ configPath: "./config.test.json" });
 
   const allCollections = await app.context.database.db().collections();
   await Promise.all(allCollections.map((collection) => collection.deleteMany()));
+
+  const allObjects = await app.context.objstorage.listObjects(app.context.configuration.objstorage.bucket).toArray();
+  await Promise.all(allObjects.map((object) => app.context.objstorage.removeObject(
+    app.context.configuration.objstorage.bucket,
+    object.name,
+  )));
 
   return app;
 }

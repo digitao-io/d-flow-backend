@@ -21,7 +21,6 @@ describe("/site/user/login", () => {
   it("should sign out token if user exists in configuration", async () => {
     const response = await supertest(app.express)
       .post("/site/user/login")
-
       .send({
         data: {
           username: "testuser",
