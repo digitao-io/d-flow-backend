@@ -33,42 +33,49 @@ export function fileUpload(ctx: Context<Configuration>): RawHandler {
       }).single("file"),
 
       async (req, res) => {
-        const key = req.params["key"];
-        const mimeType = req.file?.mimetype;
-        const sizeInBytes = req.file?.size;
-        const buffer = req.file?.buffer;
+        try {
+          const key = req.params["key"];
+          const mimeType = req.file?.mimetype;
+          const sizeInBytes = req.file?.size;
+          const buffer = req.file?.buffer;
 
-        const fileDatabase = await ctx.database.db().collection<FileDatabase>("files")
-          .findOne({ key });
+          const fileDatabase = await ctx.database.db().collection<FileDatabase>("files")
+            .findOne({ key });
 
-        if (!fileDatabase) {
-          sendError(res, new HandlerError("ENTITY_NOT_FOUND", "File metadata doesn't exist"));
+          if (!fileDatabase) {
+            sendError(res, new HandlerError("ENTITY_NOT_FOUND", "File metadata doesn't exist"));
+            return;
+          }
+
+          if (
+            fileDatabase.key !== key
+            || fileDatabase.mimeType !== mimeType
+            || fileDatabase.sizeInBytes !== sizeInBytes
+          ) {
+            sendError(res, new HandlerError("INVALID_PARAMS", "Uploaded file doesn't match the file metadata"));
+            return;
+          }
+
+          if (!buffer) {
+            sendError(res, new HandlerError("INVALID_DATA", "Uploaded file doesn't have content"));
+            return;
+          }
+
+          await ctx.objstorage.putObject(
+            ctx.configuration.objstorage.bucket,
+            key,
+            buffer,
+            sizeInBytes,
+            { "Content-Type": mimeType },
+          );
+
+          sendResponse(res, { data: undefined });
+        }
+        catch (err) {
+          sendError(res, new HandlerError("INTERNAL_ERROR", "Internal error occurs"));
+          console.log(err);
           return;
         }
-
-        if (
-          fileDatabase.key !== key
-          || fileDatabase.mimeType !== mimeType
-          || fileDatabase.sizeInBytes !== sizeInBytes
-        ) {
-          sendError(res, new HandlerError("INVALID_PARAMS", "Uploaded file doesn't match the file metadata"));
-          return;
-        }
-
-        if (!buffer) {
-          sendError(res, new HandlerError("INVALID_DATA", "Uploaded file doesn't have content"));
-          return;
-        }
-
-        await ctx.objstorage.putObject(
-          ctx.configuration.objstorage.bucket,
-          key,
-          buffer,
-          sizeInBytes,
-          { "Content-Type": mimeType },
-        );
-
-        sendResponse(res, { data: undefined });
       }],
   };
 }
