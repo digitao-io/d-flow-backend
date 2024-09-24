@@ -34,9 +34,9 @@ export function fileUpload(ctx: Context<Configuration>): RawHandler {
 
       async (req, res) => {
         const key = req.params["key"];
-        const mimeType = req.file.mimetype;
-        const sizeInBytes = req.file.size;
-        const buffer = req.file.buffer;
+        const mimeType = req.file?.mimetype;
+        const sizeInBytes = req.file?.size;
+        const buffer = req.file?.buffer;
 
         const fileDatabase = await ctx.database.db().collection<FileDatabase>("files")
           .findOne({ key });
@@ -52,6 +52,11 @@ export function fileUpload(ctx: Context<Configuration>): RawHandler {
           || fileDatabase.sizeInBytes !== sizeInBytes
         ) {
           sendError(res, new HandlerError("INVALID_PARAMS", "Uploaded file doesn't match the file metadata"));
+          return;
+        }
+
+        if (!buffer) {
+          sendError(res, new HandlerError("INVALID_DATA", "Uploaded file doesn't have content"));
           return;
         }
 

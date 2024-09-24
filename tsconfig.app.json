@@ -7,17 +7,19 @@
     "src/**/*.test.ts"
   ],
   "compilerOptions": {
-    "composite": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
-    "moduleResolution": "bundler",
+    "module": "commonjs",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "strict": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
     "skipLibCheck": true,
     "types": [
       "node",
       "jest"
     ],
     "rootDir": "./src",
-    "target": "ESNext",
     "outDir": "./dist"
   }
 }

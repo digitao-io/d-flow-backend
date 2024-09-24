@@ -13,7 +13,7 @@ export function fileDownload(ctx: Context<Configuration>): RawHandler {
         const fileDatabase = await ctx.database.db().collection<FileDatabase>("files")
           .findOne({ key });
 
-        if (fileDatabase.key !== key) {
+        if (!fileDatabase) {
           sendError(res, new HandlerError("ENTITY_NOT_FOUND", "File doesn't exist"));
           return;
         }

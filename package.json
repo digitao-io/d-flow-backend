@@ -1,12 +1,7 @@
 {
   "name": "d-flow-backend",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/main.js",
-      "types": "./dist/main.d.ts"
-    }
-  },
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
     "postinstall": "npm run build",
     "build": "tsc -p tsconfig.app.json",

@@ -39,12 +39,14 @@ export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends
 }
 
 export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
-  public context: CTX | null;
-  public express: Express | null;
+  public context: CTX;
+  public express: Express;
 
   public constructor() {
-    this.context = null;
-    this.express = null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.context = null as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.express = null as any;
   }
 
   public async initialize(params: AppInitializeParams<CTX, CONFIG>) {
