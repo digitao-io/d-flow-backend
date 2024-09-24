@@ -20,14 +20,14 @@ describe("/site/file/delete", () => {
       .post("/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "cteache" },
+        params: { key: "cteache.gif" },
       });
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
-      message: "File with key cteache doesn't exist",
+      message: "File with key cteache.gif doesn't exist",
     });
   });
 
@@ -39,7 +39,7 @@ describe("/site/file/delete", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache",
+          key: "c-teache.jpg",
           description: "C Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 12,
@@ -50,21 +50,21 @@ describe("/site/file/delete", () => {
       .post("/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache" },
+        params: { key: "c-teache.jpg" },
       });
 
     const getResponse = await supertest(app.express)
       .post("/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache" },
+        params: { key: "c-teache.jpg" },
       });
 
     expect(deleteResponse.status).toBe(200);
     expect(deleteResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "c-teache",
+        key: "c-teache.jpg",
       },
     });
 

@@ -41,7 +41,7 @@ describe("/site/file/list", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache",
+          key: "c-teache.jpg",
           description: "C Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 12,
@@ -53,7 +53,7 @@ describe("/site/file/list", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "cpp-teache",
+          key: "cpp-teache.webp",
           description: "Cpp Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 13,
@@ -69,14 +69,14 @@ describe("/site/file/list", () => {
       status: "OK",
       data: [
         {
-          key: "c-teache",
+          key: "c-teache.jpg",
           description: "C Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 12,
           createdAt: "2024-09-01T00:00:00.000Z",
         },
         {
-          key: "cpp-teache",
+          key: "cpp-teache.webp",
           description: "Cpp Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 13,

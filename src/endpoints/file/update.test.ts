@@ -21,10 +21,10 @@ describe("/site/file/update", () => {
       .set("Cookie", [jwtCookie])
       .send({
         params: {
-          key: "c-teache",
+          key: "c-teache.jpg",
         },
         data: {
-          key: "cpp-teache",
+          key: "cpp-teache.jpg",
           description: "Cpp Programming Language learn video",
         },
       });
@@ -33,7 +33,7 @@ describe("/site/file/update", () => {
     expect(response.body).toEqual({
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
-      message: "File with key c-teache doesn't exist",
+      message: "File with key c-teache.jpg doesn't exist",
     });
   });
 
@@ -50,7 +50,7 @@ describe("/site/file/update", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache",
+          key: "c-teache.jpg",
           description: "C Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 12,
@@ -62,10 +62,10 @@ describe("/site/file/update", () => {
       .set("Cookie", [jwtCookie])
       .send({
         params: {
-          key: "c-teache",
+          key: "c-teache.jpg",
         },
         data: {
-          key: "cpp-teache",
+          key: "cpp-teache.jpg",
           description: "Cpp Programming Language learn video",
         },
       });
@@ -74,21 +74,21 @@ describe("/site/file/update", () => {
       .post("/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "cpp-teache" },
+        params: { key: "cpp-teache.jpg" },
       });
 
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "cpp-teache",
+        key: "cpp-teache.jpg",
       },
     });
 
     expect(getResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "cpp-teache",
+        key: "cpp-teache.jpg",
         description: "Cpp Programming Language learn video",
         mimeType: "video/mp4",
         sizeInBytes: 12,

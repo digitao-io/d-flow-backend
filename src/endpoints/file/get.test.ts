@@ -20,14 +20,14 @@ describe("/site/file/get", () => {
       .post("/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache" },
+        params: { key: "c-teache.jpg" },
       });
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
-      message: "File with key c-teache doesn't exist",
+      message: "File with key c-teache.jpg doesn't exist",
     });
   });
 
@@ -44,7 +44,7 @@ describe("/site/file/get", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache",
+          key: "c-teache.jpg",
           description: "C Programming Language learn video",
           mimeType: "video/mp4",
           sizeInBytes: 12,
@@ -55,14 +55,14 @@ describe("/site/file/get", () => {
       .post("/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache" },
+        params: { key: "c-teache.jpg" },
       });
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "c-teache",
+        key: "c-teache.jpg",
         description: "C Programming Language learn video",
         mimeType: "video/mp4",
         sizeInBytes: 12,

@@ -44,7 +44,7 @@ export const fileIdentifierValidation = {
     "key",
   ],
   properties: {
-    key: { type: "string", pattern: patterns.slug(40) },
+    key: { type: "string", pattern: patterns.filename() },
   },
 };
 
