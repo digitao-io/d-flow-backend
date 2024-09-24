@@ -1,7 +1,7 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, WrappedHandler } from "../../main";
 import { PageDatabase, PageResponse } from "./model";
 
-export const pageList: Handler<
+export const pageList: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

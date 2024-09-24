@@ -1,7 +1,7 @@
 import {
   Configuration,
   Context,
-  Handler,
+  WrappedHandler,
   HandlerError,
 } from "../../main";
 import {
@@ -11,7 +11,7 @@ import {
   FileResponse,
 } from "./model";
 
-export const fileGet: Handler<
+export const fileGet: WrappedHandler<
   Context<Configuration>,
   Configuration,
   FileIdentifier,

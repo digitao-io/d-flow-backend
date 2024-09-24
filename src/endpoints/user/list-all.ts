@@ -1,7 +1,7 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, WrappedHandler } from "../../main";
 import { UserResponse } from "./model";
 
-export const userList: Handler<
+export const userList: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

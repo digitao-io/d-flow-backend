@@ -1,9 +1,9 @@
 import * as crypto from "crypto";
 import { signJwt } from "../../app/jwt";
-import { Configuration, Context, Handler, HandlerError } from "../../main";
+import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { UserLogin, userLoginValidation } from "./model";
 
-export const userLogin: Handler<
+export const userLogin: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

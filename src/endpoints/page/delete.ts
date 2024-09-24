@@ -1,7 +1,7 @@
-import { Configuration, Context, Handler, HandlerError } from "../../main";
+import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { PageIdentifier, pageIdentifierValidation } from "./model";
 
-export const pageDelete: Handler<
+export const pageDelete: WrappedHandler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,

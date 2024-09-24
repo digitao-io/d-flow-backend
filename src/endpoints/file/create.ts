@@ -1,7 +1,7 @@
 import {
   Configuration,
   Context,
-  Handler,
+  WrappedHandler,
 } from "../../main";
 import {
   FileCreate,
@@ -10,7 +10,7 @@ import {
   FileIdentifier,
 } from "./model";
 
-export const fileCreate: Handler<
+export const fileCreate: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

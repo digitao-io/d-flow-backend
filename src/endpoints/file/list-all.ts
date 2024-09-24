@@ -1,7 +1,7 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, WrappedHandler } from "../../main";
 import { FileDatabase, FileResponse } from "./model";
 
-export const fileList: Handler<
+export const fileList: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

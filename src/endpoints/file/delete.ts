@@ -1,7 +1,7 @@
 import {
   Configuration,
   Context,
-  Handler,
+  WrappedHandler,
   HandlerError,
 } from "../../main";
 import {
@@ -9,7 +9,7 @@ import {
   fileIdentifierValidation,
 } from "./model";
 
-export const fileDelete: Handler<
+export const fileDelete: WrappedHandler<
   Context<Configuration>,
   Configuration,
   FileIdentifier,

@@ -1,7 +1,7 @@
-import { Configuration, Context, Handler, HandlerError } from "../../main";
+import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { UserResponse, UserIdentifier, userIdentifierValidation } from "./model";
 
-export const userGet: Handler<
+export const userGet: WrappedHandler<
   Context<Configuration>,
   Configuration,
   UserIdentifier,

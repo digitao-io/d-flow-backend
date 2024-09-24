@@ -1,8 +1,8 @@
 import * as crypto from "crypto";
-import { Configuration, Context, Handler, HandlerError } from "../../main";
+import { Configuration, Context, WrappedHandler, HandlerError } from "../../main";
 import { UserUpdate, UserDatabase, UserIdentifier, userIdentifierValidation, userUpdateValidation } from "./model";
 
-export const userUpdate: Handler<
+export const userUpdate: WrappedHandler<
   Context<Configuration>,
   Configuration,
   UserIdentifier,

@@ -12,7 +12,8 @@
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "rootDir": "./src",
     "target": "ESNext",

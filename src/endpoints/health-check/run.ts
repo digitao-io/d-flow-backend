@@ -1,6 +1,6 @@
-import { Configuration, Context, Handler } from "../../main";
+import { Configuration, Context, WrappedHandler } from "../../main";
 
-export const healthCheckRun: Handler<
+export const healthCheckRun: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

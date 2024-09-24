@@ -1,7 +1,7 @@
 import {
   Configuration,
   Context,
-  Handler,
+  WrappedHandler,
   HandlerError,
 } from "../../main";
 import {
@@ -12,7 +12,7 @@ import {
   PageDatabase,
 } from "./model";
 
-export const pageUpdate: Handler<
+export const pageUpdate: WrappedHandler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
