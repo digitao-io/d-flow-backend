@@ -89,13 +89,12 @@ export function wrapHandler<
   return async (req, res) => {
     try {
       if (handler.authorizationRequired) {
-        const jwtCookie = (req.header("Cookie") ?? "").split(";").find((cookie) => cookie.split("=")[0] === "jwt");
+        const jwtCookie = (req.header("Cookie") ?? "").split(";").find((cookie) => cookie.split("=")[0].trim() === "jwt");
 
         if (!jwtCookie) {
           throw new HandlerError("AUTH_FAILED", "Authorization failed");
         }
-
-        const token = jwtCookie.split("=")[1];
+        const token = jwtCookie.split("=")[1].trim();
 
         if (!verifyJwt(token, ctx.configuration.jwt.serverSecret)) {
           throw new HandlerError("AUTH_FAILED", "Authorization failed");
