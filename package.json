@@ -3,11 +3,11 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "scripts": {
-    "postinstall": "npm run build",
-    "build": "tsc -p tsconfig.app.json",
+    "postinstall": "tsc -p tsconfig.dist.json",
+    "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "clean": "rm -rf ./dist && rm -rf ./node_modules/.tmp/",
+    "clean": "rm -rf ./dist",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "dependencies": {
