@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from "express";
+import { RequestHandler, CookieOptions, Response, Handler } from "express";
 import { Ajv, DefinedError } from "ajv";
 import { Configuration } from "./configuration";
 import { Context } from "./context";
@@ -10,6 +10,10 @@ export interface HandlerInput<
 > {
   params: PARAMS;
   data: DATA;
+}
+
+export interface HandlerOutput {
+  setCookie(name: string, value: string, options: CookieOptions): void;
 }
 
 export interface HandlerResponse<RESPONSE> {
@@ -42,7 +46,13 @@ export class HandlerError extends Error {
   }
 }
 
-export interface Handler<
+export interface RawHandler {
+  method: "post" | "get" | "delete" | "put";
+  path: string;
+  handle: Handler | Handler[];
+}
+
+export interface WrappedHandler<
   CTX extends Context<CONFIG>,
   CONFIG extends Configuration,
   PARAMS,
@@ -60,12 +70,7 @@ export interface Handler<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataValidation?: any;
 
-  handle: (ctx: CTX, input: HandlerInput<PARAMS, DATA>, expressCtx: ExpressCtx) => Promise<HandlerResponse<RESPONSE>>;
-}
-
-export interface ExpressCtx {
-  req: Request;
-  res: Response;
+  handle: (ctx: CTX, input: HandlerInput<PARAMS, DATA>, output: HandlerOutput) => Promise<HandlerResponse<RESPONSE>>;
 }
 
 export function wrapHandler<
@@ -76,7 +81,7 @@ export function wrapHandler<
   RESPONSE,
 >(
   ctx: CTX,
-  handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>,
+  handler: WrappedHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>,
 ): RequestHandler {
   const ajv = new Ajv();
   const validateParams = handler.paramsValidation
@@ -119,35 +124,40 @@ export function wrapHandler<
           params: req.body?.params,
           data: req.body?.data,
         },
-        { req, res },
+        {
+          setCookie: (name, value, options) => { res.cookie(name, value, options) },
+        },
       );
 
-      res.status(200);
-      res.json({
-        status: "OK",
-        data: response.data,
-        total: response.total,
-      });
+      sendResponse(res, response);
     }
     catch (err) {
       if (err instanceof HandlerError) {
-        res.status(err.status);
-        res.json({
-          status: "FAILED",
-          error: err.error,
-          message: err.message,
-        });
+        sendError(res, err);
       }
       else {
-        res.status(500);
-        res.json({
-          status: "FAILED",
-          error: "INTERNAL_ERROR",
-          message: err.message,
-        });
-
+        sendError(res, new HandlerError("INTERNAL_ERROR", "Internal error occurs"));
         console.log(err);
       }
     }
   };
+}
+
+export function sendResponse<RESPONSE>(res: Response, response: HandlerResponse<RESPONSE>) {
+  res.status(200);
+  res.json({
+    status: "OK",
+    ...response,
+  });
+  res.end();
+}
+
+export function sendError(res: Response, err: HandlerError) {
+  res.status(err.status);
+  res.json({
+    status: "FAILED",
+    error: err.error,
+    message: err.message,
+  });
+  res.end();
 }

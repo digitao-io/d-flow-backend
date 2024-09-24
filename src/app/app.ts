@@ -1,10 +1,11 @@
 import * as express from "express";
 import { Express } from "express";
+
 import { Context } from "./context";
 import { Configuration, readConfiguration } from "./configuration";
 import { setupDatabase } from "./database";
 import { setupObjstorage } from "./objstorage";
-import { Handler, wrapHandler } from "./handler";
+import { WrappedHandler, RawHandler, wrapHandler } from "./handler";
 
 import { healthCheckRun } from "../endpoints/health-check/run";
 
@@ -28,6 +29,8 @@ import { fileGet } from "../endpoints/file/get";
 import { fileUpdate } from "../endpoints/file/update";
 import { fileDelete } from "../endpoints/file/delete";
 import { fileList } from "../endpoints/file/list-all";
+import { fileUpload } from "../endpoints/file/upload";
+import { fileDownload } from "../endpoints/file/download";
 
 export interface AppInitializeParams<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
   configPath: string;
@@ -82,14 +85,23 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
     this.register(fileUpdate);
     this.register(fileDelete);
     this.register(fileList);
+    this.registerRaw(fileUpload(this.context));
+    this.registerRaw(fileDownload(this.context));
   }
 
-  public register<PARAMS, DATA, RESPONSE>(handler: Handler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
-    const path = `/${handler.namespace}/${handler.entity}/${handler.operation}`;
+  public register<PARAMS, DATA, RESPONSE>(wrappedHandler: WrappedHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
+    this.express.post(
+      `/${wrappedHandler.namespace}/${wrappedHandler.entity}/${wrappedHandler.operation}`,
+      express.json(),
+      wrapHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>(this.context, wrappedHandler),
+    );
+  }
 
-    this.express.post(path, express.json(), wrapHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>(this.context, handler));
-
-    return this;
+  public registerRaw(rawHandler: RawHandler) {
+    this.express[rawHandler.method](
+      rawHandler.path,
+      rawHandler.handle,
+    );
   }
 
   public run() {

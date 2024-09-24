@@ -16,7 +16,7 @@ export const userLogin: Handler<
 
   dataValidation: userLoginValidation,
 
-  async handle(ctx, { data }, { res }) {
+  async handle(ctx, { data }, { setCookie }) {
     const username = data.username;
     const passwordHash = crypto.createHash("sha256").update(data.password).digest("hex");
 
@@ -42,7 +42,7 @@ export const userLogin: Handler<
       ctx.configuration.jwt.serverSecret,
     );
 
-    res.cookie("jwt", token, {
+    setCookie("jwt", token, {
       maxAge: ctx.configuration.jwt.expireIn * 1000,
       domain: ctx.configuration.domain,
       httpOnly: true,

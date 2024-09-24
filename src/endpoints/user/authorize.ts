@@ -1,8 +1,8 @@
 import { Configuration } from "../../app/configuration";
 import { Context } from "../../app/context";
-import { Handler } from "../../app/handler";
+import { WrappedHandler } from "../../app/handler";
 
-export const userAuthorize: Handler<
+export const userAuthorize: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,

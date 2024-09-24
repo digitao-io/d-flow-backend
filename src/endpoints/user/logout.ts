@@ -11,9 +11,10 @@ export const userLogout: Handler<
   entity: "user",
   operation: "logout",
 
-  async handle(ctx, input, { res }) {
-    res.cookie("jwt", "", {
+  async handle(ctx, _input, { setCookie }) {
+    setCookie("jwt", "", {
       maxAge: 0,
+      domain: ctx.configuration.domain,
       httpOnly: true,
       path: "/",
     });
