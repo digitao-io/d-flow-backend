@@ -1,3 +1,4 @@
+import path from "node:path";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
@@ -25,6 +26,11 @@ describe("/site/file/delete", () => {
         params: { key: "cteache.gif" },
       });
 
+    await supertest(app.express)
+      .post("/site/file/delete/upload.jpg")
+      .set("Cookie", [jwtCookie])
+      .attach("file", path.join(__dirname, "upload.test.jpg"));
+
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
@@ -48,12 +54,22 @@ describe("/site/file/delete", () => {
         },
       });
 
+    await supertest(app.express)
+      .post("/site/file/upload/upload.test.jpg")
+      .set("Cookie", [jwtCookie])
+      .attach("file", path.join(__dirname, "upload.test.jpg"));
+
     const deleteResponse = await supertest(app.express)
       .post("/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache.jpg" },
       });
+
+    await supertest(app.express)
+      .post("/site/file/delete/upload.test.jpg")
+      .set("Cookie", [jwtCookie])
+      .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const getResponse = await supertest(app.express)
       .post("/site/file/get")

@@ -31,6 +31,11 @@ export const fileDelete: WrappedHandler<
       throw new HandlerError("ENTITY_NOT_FOUND", `File with key ${params.key} doesn't exist`);
     }
 
+    await ctx.objstorage.removeObject(
+      ctx.configuration.objstorage.bucket,
+      params.key,
+    );
+
     return { data: { key: params.key } };
   },
 };

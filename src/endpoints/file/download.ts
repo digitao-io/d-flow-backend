@@ -1,4 +1,3 @@
-import internal from "node:stream";
 import { Configuration, Context } from "../../main";
 import { HandlerError, RawHandler, sendError } from "../../app/handler";
 import { FileDatabase } from "./model";

@@ -18,6 +18,25 @@ describe("/site/file/download", () => {
   });
 
   it("should return 404 if the file metadata is not created", async () => {
+    const jwtCookie = await getAuthCookie(app);
+
+    await supertest(app.express)
+      .post("/site/file/create")
+      .set("Cookie", [jwtCookie])
+      .send({
+        data: {
+          key: "upload.test.jpg",
+          description: "upload jpg priture.",
+          mimeType: "image/jpg",
+          sizeInBytes: 14679,
+        },
+      });
+
+    await supertest(app.express)
+      .post("/site/file/upload/upload.test.jpg")
+      .set("Cookie", [jwtCookie])
+      .attach("file", path.join(__dirname, "upload.test.jpg"));
+
     const response = await supertest(app.express)
       .get("/site/file/download/upload.test.jpg");
 
