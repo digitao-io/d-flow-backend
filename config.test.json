@@ -24,5 +24,6 @@
   "jwt": {
     "serverSecret": "no-secret",
     "expireIn": 3600
-  }
+  },
+  "fileUploadMaxSize": 1073741824
 }

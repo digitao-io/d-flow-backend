@@ -7,6 +7,7 @@ export interface Configuration {
   objstorage: ConfigurationObjstorage;
   users: ConfigurationCredential[];
   jwt: ConfigurationJwt;
+  fileUploadMaxSize: number;
 }
 
 export interface ConfigurationDatabase {

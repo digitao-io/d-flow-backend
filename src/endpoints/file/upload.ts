@@ -29,7 +29,7 @@ export function fileUpload(ctx: Context<Configuration>): RawHandler {
 
       multer({
         storage: multer.memoryStorage(),
-        limits: { fileSize: 1024 * 64 },
+        limits: { fileSize: ctx.configuration.fileUploadMaxSize },
       }).single("file"),
 
       async (req, res) => {
