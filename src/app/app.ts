@@ -28,7 +28,7 @@ import { fileCreate } from "../endpoints/file/create";
 import { fileGet } from "../endpoints/file/get";
 import { fileUpdate } from "../endpoints/file/update";
 import { fileDelete } from "../endpoints/file/delete";
-import { fileList } from "../endpoints/file/list-all";
+import { fileList } from "../endpoints/file/list";
 import { fileUpload } from "../endpoints/file/upload";
 import { fileDownload } from "../endpoints/file/download";
 
