@@ -23,19 +23,14 @@ describe("/api/site/file/delete", () => {
       .post("/api/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "cteache.gif" },
+        params: { key: "upload.test.jpg" },
       });
-
-    await supertest(app.express)
-      .post("/api/site/file/delete/upload.jpg")
-      .set("Cookie", [jwtCookie])
-      .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
-      message: "File with key cteache.gif doesn't exist",
+      message: "File with key upload.test.jpg doesn't exist",
     });
   });
 
@@ -47,10 +42,10 @@ describe("/api/site/file/delete", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache.jpg",
-          description: "C Programming Language learn video",
-          mimeType: "video/mp4",
-          sizeInBytes: 12,
+          key: "upload.test.jpg",
+          description: "upload jpg priture.",
+          mimeType: "image/jpg",
+          sizeInBytes: 14679,
         },
       });
 
@@ -63,26 +58,24 @@ describe("/api/site/file/delete", () => {
       .post("/api/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache.jpg" },
+        params: { key: "upload.test.jpg" },
       });
-
-    await supertest(app.express)
-      .post("/api/site/file/delete/upload.test.jpg")
-      .set("Cookie", [jwtCookie])
-      .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const getResponse = await supertest(app.express)
       .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "c-teache.jpg" },
+        params: { key: "upload.test.jpg" },
       });
+
+    const downloadResponse = await supertest(app.express)
+      .get("/api/site/file/download/upload.test.jpg");
 
     expect(deleteResponse.status).toBe(200);
     expect(deleteResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "c-teache.jpg",
+        key: "upload.test.jpg",
       },
     });
 
@@ -90,6 +83,13 @@ describe("/api/site/file/delete", () => {
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
       message: expect.any(String),
+    });
+
+    expect(downloadResponse.status).toBe(404);
+    expect(downloadResponse.body).toEqual({
+      status: "FAILED",
+      error: "ENTITY_NOT_FOUND",
+      message: "File doesn't exist",
     });
   });
 });

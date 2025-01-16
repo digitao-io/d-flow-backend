@@ -1,6 +1,9 @@
+import path from "node:path";
+import fs from "node:fs";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
+import { patterns } from "../../app/pattern";
 
 describe("/api/site/file/update", () => {
   let app: App< Context<Configuration>, Configuration >;
@@ -23,11 +26,11 @@ describe("/api/site/file/update", () => {
       .set("Cookie", [jwtCookie])
       .send({
         params: {
-          key: "c-teache.jpg",
+          key: "upload.test.jpg",
         },
         data: {
-          key: "cpp-teache.jpg",
-          description: "Cpp Programming Language learn video",
+          key: "upload.jpg",
+          description: "upload jpg priture.",
         },
       });
 
@@ -35,16 +38,11 @@ describe("/api/site/file/update", () => {
     expect(response.body).toEqual({
       status: "FAILED",
       error: "ENTITY_NOT_FOUND",
-      message: "File with key c-teache.jpg doesn't exist",
+      message: "File with key upload.test.jpg doesn't exist",
     });
   });
 
   it("should update the file correctly", async () => {
-    jest.useFakeTimers({
-      doNotFake: ["nextTick"],
-      now: new Date("2024-09-01T00:00:00.000Z"),
-    });
-
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
@@ -52,23 +50,28 @@ describe("/api/site/file/update", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache.jpg",
-          description: "C Programming Language learn video",
-          mimeType: "video/mp4",
-          sizeInBytes: 12,
+          key: "upload.test.jpg",
+          description: "upload jpg priture.",
+          mimeType: "image/jpeg",
+          sizeInBytes: 14679,
         },
       });
+
+    await supertest(app.express)
+      .post("/api/site/file/upload/upload.test.jpg")
+      .set("Cookie", [jwtCookie])
+      .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const updateResponse = await supertest(app.express)
       .post("/api/site/file/update")
       .set("Cookie", [jwtCookie])
       .send({
         params: {
-          key: "c-teache.jpg",
+          key: "upload.test.jpg",
         },
         data: {
-          key: "cpp-teache.jpg",
-          description: "Cpp Programming Language learn video",
+          key: "upload.jpg",
+          description: "Just another test file.",
         },
       });
 
@@ -76,26 +79,34 @@ describe("/api/site/file/update", () => {
       .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
-        params: { key: "cpp-teache.jpg" },
+        params: { key: "upload.jpg" },
       });
+
+    const downloadResponse = await supertest(app.express)
+      .get("/api/site/file/download/upload.jpg");
 
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "cpp-teache.jpg",
+        key: "upload.jpg",
       },
     });
 
     expect(getResponse.body).toEqual({
       status: "OK",
       data: {
-        key: "cpp-teache.jpg",
-        description: "Cpp Programming Language learn video",
-        mimeType: "video/mp4",
-        sizeInBytes: 12,
-        createdAt: "2024-09-01T00:00:00.000Z",
+        key: "upload.jpg",
+        description: "Just another test file.",
+        mimeType: "image/jpeg",
+        sizeInBytes: 14679,
+        createdAt: expect.stringMatching(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$/),
       },
     });
+
+    expect(downloadResponse.status).toBe(200);
+    expect(downloadResponse.headers["content-type"]).toBe("image/jpeg");
+    expect(downloadResponse.headers["content-length"]).toBe("14679");
+    expect(downloadResponse.body).toEqual(fs.readFileSync(path.join(__dirname, "upload.test.jpg")));
   });
 });

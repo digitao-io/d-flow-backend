@@ -23,10 +23,10 @@ describe("/api/site/file/create", () => {
       .set("Cookie", [jwtCookie])
       .send({
         data: {
-          key: "c-teache.jpg",
-          description: "C Programming Language learn video",
-          mimeType: "video/mp4",
-          sizeInBytes: 12,
+          key: "upload.test.jpg",
+          description: "upload jpg priture.",
+          mimeType: "image/jpg",
+          sizeInBytes: 14679,
         },
       });
 
@@ -34,7 +34,7 @@ describe("/api/site/file/create", () => {
     expect(response.body).toEqual({
       status: "OK",
       data: {
-        key: "c-teache.jpg",
+        key: "upload.test.jpg",
       },
     });
   });

@@ -43,6 +43,17 @@ export const fileUpdate: WrappedHandler<
       throw new HandlerError("ENTITY_NOT_FOUND", `File with key ${params.key} doesn't exist`);
     }
 
+    await ctx.objstorage.copyObject(
+      ctx.configuration.objstorage.bucket,
+      data.key,
+      `/${ctx.configuration.objstorage.bucket}/${params.key}`,
+    );
+
+    await ctx.objstorage.removeObject(
+      ctx.configuration.objstorage.bucket,
+      params.key,
+    );
+
     return { data: { key: data.key } };
   },
 };
