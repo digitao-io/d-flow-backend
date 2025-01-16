@@ -3,6 +3,7 @@ import fs from "node:fs";
 export interface Configuration {
   domain: string;
   port: number;
+  pathPrefix: string;
   database: ConfigurationDatabase;
   objstorage: ConfigurationObjstorage;
   users: ConfigurationCredential[];

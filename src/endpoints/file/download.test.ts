@@ -4,7 +4,7 @@ import supertest from "supertest";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 
-describe("/site/file/download", () => {
+describe("/api/site/file/download", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
@@ -21,7 +21,7 @@ describe("/site/file/download", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -33,12 +33,12 @@ describe("/site/file/download", () => {
       });
 
     await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const response = await supertest(app.express)
-      .get("/site/file/download/upload.test.jpg");
+      .get("/api/site/file/download/upload.test.jpg");
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
@@ -52,7 +52,7 @@ describe("/site/file/download", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -64,7 +64,7 @@ describe("/site/file/download", () => {
       });
 
     const response = await supertest(app.express)
-      .get("/site/file/download/upload.test.jpg");
+      .get("/api/site/file/download/upload.test.jpg");
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
@@ -78,7 +78,7 @@ describe("/site/file/download", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -90,12 +90,12 @@ describe("/site/file/download", () => {
       });
 
     await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const response = await supertest(app.express)
-      .get("/site/file/download/upload.test.jpg");
+      .get("/api/site/file/download/upload.test.jpg");
 
     expect(response.status).toBe(200);
     expect(response.headers["content-type"]).toBe("image/jpeg");

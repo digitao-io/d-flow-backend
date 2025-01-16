@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { runBeforeEach, runAfterEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/health-check/run", () => {
+describe("/api/site/health-check/run", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe("/site/health-check/run", () => {
 
   it("should response correctly", async () => {
     const response = await supertest(app.express)
-      .post("/site/health-check/run");
+      .post("/api/site/health-check/run");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

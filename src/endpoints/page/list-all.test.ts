@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/page/list", () => {
+describe("/api/site/page/list", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe("/site/page/list", () => {
 
   it("should response with an empty array if there is no page", async () => {
     const response = await supertest(app.express)
-      .post("/site/page/list-all");
+      .post("/api/site/page/list-all");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
@@ -36,7 +36,7 @@ describe("/site/page/list", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/page/create")
+      .post("/api/site/page/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -49,7 +49,7 @@ describe("/site/page/list", () => {
       });
 
     await supertest(app.express)
-      .post("/site/page/create")
+      .post("/api/site/page/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -62,7 +62,7 @@ describe("/site/page/list", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/page/list-all");
+      .post("/api/site/page/list-all");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({

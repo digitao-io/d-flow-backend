@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/page/get", () => {
+describe("/api/site/page/get", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe("/site/page/get", () => {
 
   it("should response with 404 if page doens't exist", async () => {
     const response = await supertest(app.express)
-      .post("/site/page/get")
+      .post("/api/site/page/get")
       .send({
         params: { key: "c-intro" },
       });
@@ -39,7 +39,7 @@ describe("/site/page/get", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/page/create")
+      .post("/api/site/page/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -52,7 +52,7 @@ describe("/site/page/get", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/page/get")
+      .post("/api/site/page/get")
       .send({
         params: { key: "c-intro" },
       });

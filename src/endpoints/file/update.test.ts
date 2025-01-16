@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/file/update", () => {
+describe("/api/site/file/update", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("/site/file/update", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/file/update")
+      .post("/api/site/file/update")
       .set("Cookie", [jwtCookie])
       .send({
         params: {
@@ -48,7 +48,7 @@ describe("/site/file/update", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -60,7 +60,7 @@ describe("/site/file/update", () => {
       });
 
     const updateResponse = await supertest(app.express)
-      .post("/site/file/update")
+      .post("/api/site/file/update")
       .set("Cookie", [jwtCookie])
       .send({
         params: {
@@ -73,7 +73,7 @@ describe("/site/file/update", () => {
       });
 
     const getResponse = await supertest(app.express)
-      .post("/site/file/get")
+      .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "cpp-teache.jpg" },

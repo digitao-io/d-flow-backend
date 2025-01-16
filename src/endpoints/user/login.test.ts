@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/user/login", () => {
+describe("/api/site/user/login", () => {
   let app: App<Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe("/site/user/login", () => {
 
   it("should sign out token if user exists in configuration", async () => {
     const response = await supertest(app.express)
-      .post("/site/user/login")
+      .post("/api/site/user/login")
       .send({
         data: {
           username: "testuser",
@@ -43,7 +43,7 @@ describe("/site/user/login", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/user/create")
+      .post("/api/site/user/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -55,7 +55,7 @@ describe("/site/user/login", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/user/login")
+      .post("/api/site/user/login")
       .send({
         data: {
           username: "admin",

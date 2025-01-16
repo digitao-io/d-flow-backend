@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/user/update", () => {
+describe("/api/site/user/update", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("/site/user/update", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/user/update")
+      .post("/api/site/user/update")
       .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
@@ -42,7 +42,7 @@ describe("/site/user/update", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/user/create")
+      .post("/api/site/user/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -54,7 +54,7 @@ describe("/site/user/update", () => {
       });
 
     const updateResponse = await supertest(app.express)
-      .post("/site/user/update")
+      .post("/api/site/user/update")
       .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin" },
@@ -67,7 +67,7 @@ describe("/site/user/update", () => {
       });
 
     const getResponse = await supertest(app.express)
-      .post("/site/user/get")
+      .post("/api/site/user/get")
       .set("Cookie", [jwtCookie])
       .send({
         params: { username: "admin-one" },

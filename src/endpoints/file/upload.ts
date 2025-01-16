@@ -7,7 +7,7 @@ import { FileDatabase } from "./model";
 export function fileUpload(ctx: Context<Configuration>): RawHandler {
   return {
     method: "post",
-    path: "/site/file/upload/:key",
+    path: "/api/site/file/upload/:key",
     handle: [
       (req, res, next) => {
         const jwtCookie = (req.header("Cookie") ?? "").split(";").find((cookie) => cookie.split("=")[0].trim() === "jwt");

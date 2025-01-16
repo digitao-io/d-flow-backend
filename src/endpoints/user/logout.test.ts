@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/user/logout", () => {
+describe("/api/site/user/logout", () => {
   let app: App<Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe("/site/user/logout", () => {
 
   it("should log out of account", async () => {
     await supertest(app.express)
-      .post("/site/user/create")
+      .post("/api/site/user/create")
       .send({
         data: {
           username: "admin",
@@ -33,7 +33,7 @@ describe("/site/user/logout", () => {
       });
 
     await supertest(app.express)
-      .post("/site/user/login")
+      .post("/api/site/user/login")
       .send({
         data: {
           username: "admin",
@@ -42,7 +42,7 @@ describe("/site/user/logout", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/user/logout");
+      .post("/api/site/user/logout");
 
     expect(response.status).toBe(200);
     expect(response.headers["set-cookie"]).toEqual([

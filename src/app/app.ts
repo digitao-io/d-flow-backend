@@ -93,7 +93,7 @@ export class App<CTX extends Context<CONFIG>, CONFIG extends Configuration> {
 
   public register<PARAMS, DATA, RESPONSE>(wrappedHandler: WrappedHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>) {
     this.express.post(
-      `/${wrappedHandler.namespace}/${wrappedHandler.entity}/${wrappedHandler.operation}`,
+      `${this.context.configuration.pathPrefix}/${wrappedHandler.namespace}/${wrappedHandler.entity}/${wrappedHandler.operation}`,
       express.json(),
       wrapHandler<CTX, CONFIG, PARAMS, DATA, RESPONSE>(this.context, wrappedHandler),
     );

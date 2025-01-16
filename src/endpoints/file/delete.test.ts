@@ -3,7 +3,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/file/delete", () => {
+describe("/api/site/file/delete", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
@@ -20,14 +20,14 @@ describe("/site/file/delete", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/file/delete")
+      .post("/api/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "cteache.gif" },
       });
 
     await supertest(app.express)
-      .post("/site/file/delete/upload.jpg")
+      .post("/api/site/file/delete/upload.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
@@ -43,7 +43,7 @@ describe("/site/file/delete", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -55,24 +55,24 @@ describe("/site/file/delete", () => {
       });
 
     await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const deleteResponse = await supertest(app.express)
-      .post("/site/file/delete")
+      .post("/api/site/file/delete")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache.jpg" },
       });
 
     await supertest(app.express)
-      .post("/site/file/delete/upload.test.jpg")
+      .post("/api/site/file/delete/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     const getResponse = await supertest(app.express)
-      .post("/site/file/get")
+      .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache.jpg" },

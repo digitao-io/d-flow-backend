@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/file/get", () => {
+describe("/api/site/file/get", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("/site/file/get", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/file/get")
+      .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache.jpg" },
@@ -42,7 +42,7 @@ describe("/site/file/get", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -54,7 +54,7 @@ describe("/site/file/get", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/file/get")
+      .post("/api/site/file/get")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-teache.jpg" },

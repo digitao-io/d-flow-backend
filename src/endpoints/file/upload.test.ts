@@ -3,7 +3,7 @@ import supertest from "supertest";
 import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 
-describe("/site/file/upload", () => {
+describe("/api/site/file/upload", () => {
   let app: App< Context<Configuration>, Configuration >;
 
   beforeEach(async () => {
@@ -18,7 +18,7 @@ describe("/site/file/upload", () => {
 
   it("should response with 401 if user not logged in", async () => {
     const response = await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
     expect(response.status).toBe(401);
@@ -33,7 +33,7 @@ describe("/site/file/upload", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
@@ -49,7 +49,7 @@ describe("/site/file/upload", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -61,7 +61,7 @@ describe("/site/file/upload", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 
@@ -77,7 +77,7 @@ describe("/site/file/upload", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/file/create")
+      .post("/api/site/file/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -89,7 +89,7 @@ describe("/site/file/upload", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/file/upload/upload.test.jpg")
+      .post("/api/site/file/upload/upload.test.jpg")
       .set("Cookie", [jwtCookie])
       .attach("file", path.join(__dirname, "upload.test.jpg"));
 

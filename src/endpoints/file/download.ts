@@ -6,7 +6,7 @@ import { S3Error } from "minio";
 export function fileDownload(ctx: Context<Configuration>): RawHandler {
   return {
     method: "get",
-    path: "/site/file/download/:key",
+    path: "/api/site/file/download/:key",
     handle:
       async (req, res) => {
         try {

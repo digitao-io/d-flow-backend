@@ -1,12 +1,13 @@
 {
   "domain": "localhost",
   "port": 3000,
+  "pathPrefix": "/api",
   "database": {
     "host": "localhost",
     "port": 27017,
     "user": "root",
     "password": "no-password",
-    "database": "website_test"
+    "database": "website-test"
   },
   "objstorage": {
     "host": "localhost",

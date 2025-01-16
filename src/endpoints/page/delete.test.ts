@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/page/delete", () => {
+describe("/api/site/page/delete", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("/site/page/delete", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/page/delete")
+      .post("/api/site/page/delete")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-intro" },
@@ -37,7 +37,7 @@ describe("/site/page/delete", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/page/create")
+      .post("/api/site/page/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -50,14 +50,14 @@ describe("/site/page/delete", () => {
       });
 
     const deleteResponse = await supertest(app.express)
-      .post("/site/page/delete")
+      .post("/api/site/page/delete")
       .set("Cookie", [jwtCookie])
       .send({
         params: { key: "c-intro" },
       });
 
     const getResponse = await supertest(app.express)
-      .post("/site/page/get")
+      .post("/api/site/page/get")
       .send({
         params: { key: "c-intro" },
       });

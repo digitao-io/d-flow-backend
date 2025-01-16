@@ -2,7 +2,7 @@ import { App, Configuration, Context } from "../../main";
 import { getAuthCookie, runAfterEach, runBeforeEach } from "../../test/testutils";
 import supertest from "supertest";
 
-describe("/site/user/list-all", () => {
+describe("/api/site/user/list-all", () => {
   let app: App< Context<Configuration>, Configuration>;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe("/site/user/list-all", () => {
     const jwtCookie = await getAuthCookie(app);
 
     const response = await supertest(app.express)
-      .post("/site/user/list-all")
+      .post("/api/site/user/list-all")
       .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);
@@ -34,7 +34,7 @@ describe("/site/user/list-all", () => {
     const jwtCookie = await getAuthCookie(app);
 
     await supertest(app.express)
-      .post("/site/user/create")
+      .post("/api/site/user/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -46,7 +46,7 @@ describe("/site/user/list-all", () => {
       });
 
     await supertest(app.express)
-      .post("/site/user/create")
+      .post("/api/site/user/create")
       .set("Cookie", [jwtCookie])
       .send({
         data: {
@@ -58,7 +58,7 @@ describe("/site/user/list-all", () => {
       });
 
     const response = await supertest(app.express)
-      .post("/site/user/list-all")
+      .post("/api/site/user/list-all")
       .set("Cookie", [jwtCookie]);
 
     expect(response.status).toBe(200);

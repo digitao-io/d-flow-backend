@@ -22,7 +22,7 @@ export async function runAfterEach<CTX extends Context<CONFIG>, CONFIG extends C
 
 export async function getAuthCookie<CTX extends Context<CONFIG>, CONFIG extends Configuration>(app: App<CTX, CONFIG>): Promise<string> {
   const response = await supertest(app.express)
-    .post("/site/user/login")
+    .post("/api/site/user/login")
     .send({
       data: {
         username: "testuser",
