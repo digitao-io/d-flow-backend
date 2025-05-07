@@ -35,7 +35,7 @@ export const pageRequestDataValidation = {
   ],
   properties: {
     name: { type: "string", pattern: patterns.nonEmptyString(120) },
-    description: { type: "string", pattern: patterns.anyString(240) },
+    description: { type: "string", pattern: patterns.anyString(500) },
     urlPattern: { type: "string", pattern: patterns.urlPath() },
     details: { type: "object" },
   },
