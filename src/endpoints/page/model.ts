@@ -16,7 +16,7 @@ export const pageIdentifierValidation = {
 };
 
 export interface PageRequestData {
-  title: string;
+  name: string;
   description: string;
   urlPattern: string;
 
@@ -28,13 +28,13 @@ export const pageRequestDataValidation = {
   type: "object",
   additionalProperties: false,
   required: [
-    "title",
+    "name",
     "description",
     "urlPattern",
     "details",
   ],
   properties: {
-    title: { type: "string", pattern: patterns.nonEmptyString(120) },
+    name: { type: "string", pattern: patterns.nonEmptyString(120) },
     description: { type: "string", pattern: patterns.anyString(240) },
     urlPattern: { type: "string", pattern: patterns.urlPath() },
     details: { type: "object" },
@@ -42,7 +42,7 @@ export const pageRequestDataValidation = {
 };
 
 export interface PageDatabaseData {
-  title: string;
+  name: string;
   description: string;
   urlPattern: string;
 
@@ -54,7 +54,7 @@ export interface PageDatabaseData {
 }
 
 export interface PageResponseData {
-  title: string;
+  name: string;
   description: string;
   urlPattern: string;
 

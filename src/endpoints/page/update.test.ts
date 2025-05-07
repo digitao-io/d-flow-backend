@@ -27,7 +27,7 @@ describe("/api/site/page/update", () => {
         },
         data: {
           key: "c-lang-intro",
-          title: "An Introduction to C Programming Language",
+          name: "An Introduction to C Programming Language",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-lang-intro",
           details: { foo: "bar" },
@@ -56,7 +56,7 @@ describe("/api/site/page/update", () => {
       .send({
         data: {
           key: "c-intro",
-          title: "C Programming Language Introduction",
+          name: "C Programming Language Introduction",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-intro",
           details: { foo: "bar" },
@@ -77,7 +77,7 @@ describe("/api/site/page/update", () => {
         },
         data: {
           key: "c-lang-intro",
-          title: "An Introduction to C Programming Language",
+          name: "An Introduction to C Programming Language",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-lang-intro",
           details: { foo: "bar" },
@@ -102,7 +102,7 @@ describe("/api/site/page/update", () => {
       status: "OK",
       data: {
         key: "c-lang-intro",
-        title: "An Introduction to C Programming Language",
+        name: "An Introduction to C Programming Language",
         description: "This is a C programing language introduction",
         urlPattern: "/articles/c-lang-intro",
         details: { foo: "bar" },

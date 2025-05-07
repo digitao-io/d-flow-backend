@@ -23,7 +23,7 @@ export const pageList: WrappedHandler<
     return {
       data: pages.map((page) => ({
         key: page.key,
-        title: page.title,
+        name: page.name,
         description: page.description,
         urlPattern: page.urlPattern,
         details: page.details,

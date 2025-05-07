@@ -31,7 +31,7 @@ export const pageUpdate: WrappedHandler<
     const now = new Date();
     const pageDatabase: Partial<PageDatabase> = {
       key: data.key,
-      title: data.title,
+      name: data.name,
       description: data.description,
       urlPattern: data.urlPattern,
       details: data.details,

@@ -42,7 +42,7 @@ describe("/api/site/page/delete", () => {
       .send({
         data: {
           key: "c-intro",
-          title: "C Programming Language Introduction",
+          name: "C Programming Language Introduction",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-intro",
           details: { foo: "bar" },

@@ -44,7 +44,7 @@ describe("/api/site/page/get", () => {
       .send({
         data: {
           key: "c-intro",
-          title: "C Programming Language Introduction",
+          name: "C Programming Language Introduction",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-intro",
           details: { foo: "bar" },
@@ -62,7 +62,7 @@ describe("/api/site/page/get", () => {
       status: "OK",
       data: {
         key: "c-intro",
-        title: "C Programming Language Introduction",
+        name: "C Programming Language Introduction",
         description: "This is a C programing language introduction",
         urlPattern: "/articles/c-intro",
         details: { foo: "bar" },

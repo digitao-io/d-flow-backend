@@ -41,7 +41,7 @@ describe("/api/site/page/list", () => {
       .send({
         data: {
           key: "c-intro",
-          title: "C Programming Language Introduction",
+          name: "C Programming Language Introduction",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-intro",
           details: { foo: "bar" },
@@ -54,7 +54,7 @@ describe("/api/site/page/list", () => {
       .send({
         data: {
           key: "cpp-intro",
-          title: "C++ Programming Language Introduction",
+          name: "C++ Programming Language Introduction",
           description: "This is a C++ programing language introduction",
           urlPattern: "/articles/cpp-intro",
           details: { foo: "bar" },
@@ -70,7 +70,7 @@ describe("/api/site/page/list", () => {
       data: [
         {
           key: "c-intro",
-          title: "C Programming Language Introduction",
+          name: "C Programming Language Introduction",
           description: "This is a C programing language introduction",
           urlPattern: "/articles/c-intro",
           details: { foo: "bar" },
@@ -79,7 +79,7 @@ describe("/api/site/page/list", () => {
         },
         {
           key: "cpp-intro",
-          title: "C++ Programming Language Introduction",
+          name: "C++ Programming Language Introduction",
           description: "This is a C++ programing language introduction",
           urlPattern: "/articles/cpp-intro",
           details: { foo: "bar" },

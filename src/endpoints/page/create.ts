@@ -19,7 +19,7 @@ export const pageCreate: WrappedHandler<
     const now = new Date();
     const pageDatabase: PageDatabase = {
       key: data.key,
-      title: data.title,
+      name: data.name,
       description: data.description,
       urlPattern: data.urlPattern,
       details: data.details,

@@ -28,7 +28,7 @@ export const pageGet: WrappedHandler<
     return {
       data: {
         key: page.key,
-        title: page.title,
+        name: page.name,
         description: page.description,
         urlPattern: page.urlPattern,
         details: page.details,
