@@ -1,6 +1,21 @@
 import { patterns } from "../../app/pattern";
 
-export interface PageData {
+export interface PageIdentifier {
+  key: string;
+}
+
+export const pageIdentifierValidation = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "key",
+  ],
+  properties: {
+    key: { type: "string", pattern: patterns.slug(120) },
+  },
+};
+
+export interface PageRequestData {
   title: string;
   description: string;
   urlPattern: string;
@@ -9,7 +24,7 @@ export interface PageData {
   details: any;
 }
 
-export const pageDataValidation = {
+export const pageRequestDataValidation = {
   type: "object",
   additionalProperties: false,
   required: [
@@ -27,45 +42,42 @@ export const pageDataValidation = {
 };
 
 export interface PageDatabaseData {
+  title: string;
+  description: string;
+  urlPattern: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  details: any;
+
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface PageResponseData {
+  title: string;
+  description: string;
+  urlPattern: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  details: any;
+
   createdAt: string;
   updatedAt: string;
 }
 
-export interface PageIdentifier {
-  key: string;
-}
+export interface PageResponse extends PageResponseData, PageIdentifier {}
+export interface PageDatabase extends PageDatabaseData, PageIdentifier {}
 
-export const pageIdentifierValidation = {
+export interface PageRequest extends PageRequestData, PageIdentifier {}
+export const pageRequestValidation = {
   type: "object",
   additionalProperties: false,
   required: [
-    "key",
-  ],
-  properties: {
-    key: { type: "string", pattern: patterns.slug(120) },
-  },
-};
-
-export interface PageResponse extends PageData, PageResponseData, PageIdentifier {}
-
-export interface PageDatabase extends PageData, PageDatabaseData, PageIdentifier {}
-
-export interface PageCreateAndUpdate extends PageData, PageIdentifier {}
-
-export const pageCreateAndUpdateValidation = {
-  type: "object",
-  additionalProperties: false,
-  required: [
-    ...pageDataValidation.required,
+    ...pageRequestDataValidation.required,
     ...pageIdentifierValidation.required,
   ],
   properties: {
-    ...pageDataValidation.properties,
+    ...pageRequestDataValidation.properties,
     ...pageIdentifierValidation.properties,
   },
 };

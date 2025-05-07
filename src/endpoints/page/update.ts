@@ -5,10 +5,10 @@ import {
   HandlerError,
 } from "../../main";
 import {
-  PageCreateAndUpdate,
+  PageRequest,
   PageIdentifier,
   pageIdentifierValidation,
-  pageCreateAndUpdateValidation,
+  pageRequestValidation,
   PageDatabase,
 } from "./model";
 
@@ -16,7 +16,7 @@ export const pageUpdate: WrappedHandler<
   Context<Configuration>,
   Configuration,
   PageIdentifier,
-  PageCreateAndUpdate,
+  PageRequest,
   PageIdentifier
 > = {
   namespace: "site",
@@ -25,7 +25,7 @@ export const pageUpdate: WrappedHandler<
 
   authorizationRequired: true,
   paramsValidation: pageIdentifierValidation,
-  dataValidation: pageCreateAndUpdateValidation,
+  dataValidation: pageRequestValidation,
 
   async handle(ctx, { params, data }) {
     const now = new Date();

@@ -1,11 +1,11 @@
 import { Configuration, Context, WrappedHandler } from "../../main";
-import { PageCreateAndUpdate, PageDatabase, PageIdentifier, pageCreateAndUpdateValidation } from "./model";
+import { PageRequest, PageDatabase, PageIdentifier, pageRequestValidation } from "./model";
 
 export const pageCreate: WrappedHandler<
   Context<Configuration>,
   Configuration,
   undefined,
-  PageCreateAndUpdate,
+  PageRequest,
   PageIdentifier
 > = {
   namespace: "site",
@@ -13,7 +13,7 @@ export const pageCreate: WrappedHandler<
   operation: "create",
 
   authorizationRequired: true,
-  dataValidation: pageCreateAndUpdateValidation,
+  dataValidation: pageRequestValidation,
 
   async handle(ctx, { data }) {
     const now = new Date();
